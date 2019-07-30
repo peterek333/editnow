@@ -62,6 +62,14 @@ def handleAction(ch, method, properties, body):
         processedImageName = bodyDict["actionName"] + "_" + bodyDict["fileName"]
         runScriptAndWaitForFinish(actionScriptName, [IMAGES_FOLDER_PATH, bodyDict["fileName"], processedImageName])
         print("Finished script")
+        sendFinishedAction(processedImageName)
+
+
+def sendFinishedAction(processedImageName):
+    finishedActionChannel = rabbitMQConnection.channel()
+    finishedActionChannel.basic_publish(exchange='', routing_key=FINISHED_ACTION_QUEUE_NAME, body=json.dumps(processedImageName))
+    finishedActionChannel.close()
+
 
 
 if __name__ == "__main__":

@@ -1,6 +1,8 @@
 package pl.pl.mgr.editnow.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.pl.mgr.editnow.dto.ActionRequest;
@@ -26,7 +28,7 @@ public class ImageController {
 //  }
 
   @PostMapping("/transformation/grayscale")
-  public String transformToGrayscale(@RequestBody ActionRequest actionRequest) {
+  public long transformToGrayscale(@RequestBody ActionRequest actionRequest) {
     return imageService.transformToGrayscale(actionRequest);
   }
 

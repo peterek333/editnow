@@ -1,12 +1,35 @@
 package pl.pl.mgr.editnow.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import pl.pl.mgr.editnow.domain.field.ActionStatus;
 
-@AllArgsConstructor
+import javax.persistence.*;
+
+@Entity
+@Table(name="actions")
+@Getter
+@Setter
 public class Action {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
 
   //TODO handle actionname
   private String actionName;
-  private String fileName;
+
+  @OneToOne
+  private Image inputImage;
+
+  @OneToOne
+  private Image outputImage;
+
+  @Enumerated(EnumType.STRING)
+  private ActionStatus status;
+
+  @ManyToOne
+  private User user;
 
 }

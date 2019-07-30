@@ -43,10 +43,10 @@
 		</dependency>
 
 		<!-- In-Memory database used for local development & testing -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.h2database</groupId>-->
+<!--			<artifactId>h2</artifactId>-->
+<!--		</dependency>-->
 
 		<!-- Switch back from Spring Boot 2.x standard HikariCP to Tomcat JDBC,
 		configured later in Heroku (see https://stackoverflow.com/a/49970142/4964553) -->
@@ -55,12 +55,10 @@
 			<artifactId>tomcat-jdbc</artifactId>
 		</dependency>
 
-		<!-- PostgreSQL used in Staging and Production environment, e.g. on Heroku -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
 
 		<!-- Testing -->
 		<dependency>

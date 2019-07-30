@@ -17,23 +17,8 @@ import java.util.UUID;
 @Service
 public class FileStorageService {
 
-//  @Transactional
-//  public String saveRenamedWithUUID(MultipartFile file) {
-//    String fileName = getUUID() + ".jpg";
-//    //TODO util for manage file path local/cloud + handle imageBase64 type
-//    String filePath = "../images/" + fileName;
-//    File savedImage = new File(filePath);
-//
-//    try {
-//      file.transferTo(savedImage);
-//      return fileName;
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-//    return null;
-//  }
   @Transactional
-  public String saveRenamedWithUUID(String imageBase64, ImageType imageType) {
+  public String saveRenamedToUUID(String imageBase64, ImageType imageType) {
     String fileName = getUUID() + '.' + imageType.getExtension();
     //TODO util for manage file path local/cloud + handle imageBase64 type
     Path filePath = Paths.get("../images/", fileName);
@@ -49,11 +34,6 @@ public class FileStorageService {
   }
 
   private String getUUID() {
-    boolean unique = false;
-    //TODO check exist uuid in directory
-//    while(!unique) {
-//      String unique =
-//    }
     return UUID.randomUUID().toString();
   }
 
