@@ -2,10 +2,7 @@ package pl.pl.mgr.editnow.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import pl.pl.mgr.editnow.dto.ImageType;
-
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,11 +14,13 @@ import java.util.UUID;
 @Service
 public class FileStorageService {
 
+  private static final String IMAGES_DIRECTORY = "../images/";
+
   @Transactional
   public String saveRenamedToUUID(String imageBase64, ImageType imageType) {
     String fileName = getUUID() + '.' + imageType.getExtension();
     //TODO util for manage file path local/cloud + handle imageBase64 type
-    Path filePath = Paths.get("../images/", fileName);
+    Path filePath = Paths.get(IMAGES_DIRECTORY, fileName);
 
     try {
       byte[] decodedImageBytes = Base64.getDecoder().decode(imageBase64.getBytes(StandardCharsets.UTF_8));
@@ -38,4 +37,9 @@ public class FileStorageService {
   }
 
 
+  public String loadImageInBase64(String imageName) throws IOException {
+    byte[] imageBytes = Files.readAllBytes(Paths.get(IMAGES_DIRECTORY, imageName));
+
+    return Base64.getEncoder().encodeToString(imageBytes);
+  }
 }

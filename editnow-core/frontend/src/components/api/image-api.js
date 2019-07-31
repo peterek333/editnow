@@ -10,7 +10,13 @@ export default {
   getTestImageSki() {
     return AXIOS.get(`/test/skis`);
   },
-  transformToGrayscale(image) {
-    return
+  transformToGrayscale(imageDetails) {
+    return AXIOS.post(`/transformation/grayscale`, {
+      imageBase64: imageDetails.base64,
+      imageType: imageDetails.type
+    });
+  },
+  getImage(imageName) {
+    return AXIOS.get(`/image/${imageName}`);
   }
 }

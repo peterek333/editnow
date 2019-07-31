@@ -30,4 +30,9 @@ public class UserService {
     return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
   }
 
+  public User getUserFromContext() {
+    String userUUIDFromContext = getUserUUIDFromContext();
+
+    return userRepository.findByUuid(userUUIDFromContext);
+  }
 }

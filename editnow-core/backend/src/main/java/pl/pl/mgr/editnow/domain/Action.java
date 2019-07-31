@@ -1,6 +1,5 @@
 package pl.pl.mgr.editnow.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import pl.pl.mgr.editnow.domain.field.ActionStatus;
@@ -30,6 +29,8 @@ public class Action {
   private ActionStatus status;
 
   @ManyToOne
+//  @JoinColumn(name = "action_id")
+  @JoinColumn
   private User user;
 
 }

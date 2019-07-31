@@ -17,8 +17,11 @@ public class User {
 
     private String uuid;
 
-    @OneToMany(mappedBy = "user")
+//    @OneToMany(mappedBy = "actionId")
+//    @JoinColumn(name="action_id", referencedColumnName="id")
 //    @OrderColumn(name="")
-    private List<Action> actionChain;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private transient List<Action> actionChain;
 
 }
