@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CompletedAction {
 
-  private final long id;
+  private final long actionId;
+  private final String imageBase64;
 
 }

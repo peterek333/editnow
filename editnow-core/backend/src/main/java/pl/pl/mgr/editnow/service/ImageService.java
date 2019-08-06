@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.domain.Image;
 import pl.pl.mgr.editnow.domain.field.ActionStatus;
+import pl.pl.mgr.editnow.dto.ActionQueueItem;
 import pl.pl.mgr.editnow.dto.ActionRequest;
 import pl.pl.mgr.editnow.dto.ImageDetails;
 import pl.pl.mgr.editnow.dto.ImageType;
@@ -33,12 +34,13 @@ public class ImageService {
 
     public ImageDetails getTestSkiImage() throws IOException {
         showFiles("./");
-        byte[] imageBytes = Files.readAllBytes(Paths.get("files/skis.jpeg"));
+        String imageBase64 = fileStorageService.loadImageInBase64("skis.jpeg");
+//        byte[] imageBytes = Files.readAllBytes(Paths.get("files/skis.jpeg"));
 //        byte[] imageBytes = Files.readAllBytes(Paths.get("../files/skis_resized.jpg"));
 
 
         return new ImageDetails(
-          Base64.getEncoder().encodeToString(imageBytes),
+          imageBase64,
           ImageType.JPG);
     }
 
@@ -50,12 +52,19 @@ public class ImageService {
         Action action = new Action();
         action.setActionName(actionName);
         action.setInputImage(inputImage);
-        action.setOutputImage(outputImage);
+        action.setOutputImage(outputImage); //TODO set when output image was created
         action.setStatus(ActionStatus.PENDING);
         action.setUser(userService.getUserFromContext());
         actionRepository.save(action);
 
-        actionSender.send(action);
+      ActionQueueItem actionQueueItem = ActionQueueItem.builder() //TODO mapper
+        .actionId(action.getId())
+        .actionName(actionName)
+        .inputImageName(inputImage.getName())
+        .imageBase64(actionRequest.getImageBase64())
+        .build();
+
+        actionSender.send(actionQueueItem);
 
         return action.getOutputImage().getName();
     }

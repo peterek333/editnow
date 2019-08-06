@@ -3,13 +3,13 @@ import json, os
 import subprocess
 import pika
 from pika.exceptions import AMQPConnectionError
-import MySQLdb
+# import MySQLdb
 import base64
 
 ACTION_QUEUE_NAME = 'action'
 COMPLETED_ACTION_QUEUE_NAME = 'completedAction'
 SCRIPTS_FOLDER_PATH = './scripts/'
-IMAGES_FOLDER_PATH = '../images/'
+IMAGES_FOLDER_PATH = './images/'
 
 args = []
 # amqp_uri = 'localhost'
@@ -26,7 +26,7 @@ def actions(name):
 def parseArguments():
     global args
     parser = ArgumentParser()
-    parser.add_argument('-l', '--local', default=True,
+    parser.add_argument('-l', '--local', default=False,
                         help='Configure local environment if true - else configure for cloud (PCF)')
     args = parser.parse_args()
 
@@ -34,23 +34,27 @@ def parseArguments():
 def prepareEnvironment():
     # global amqp_uri
     initRabbitMQConnection()
-    initDatabaseConnection()
+    # initDatabaseConnection()
+    createDirectories()
 
 
 def initRabbitMQConnection():
-    global rabbitMQConnection
-    amqp_uri = pika.ConnectionParameters('localhost') if args.local \
-        else json.loads(os.environ['VCAP_SERVICES'])['cloudamqp'][0]['credentials']['uri']
+    global rabbitMQConnection, args
+
+    amqp_uri = pika.ConnectionParameters('localhost')
+    if not args.local:
+        amqp_uri = pika.URLParameters(json.loads(os.environ['VCAP_SERVICES'])['cloudamqp'][0]['credentials']['uri'])
+
     try:
-        print(amqp_uri)
         rabbitMQConnection = pika.BlockingConnection(amqp_uri)
     except AMQPConnectionError:
         print(' RabbitMQ connection problem')
 
 
-def initDatabaseConnection():
-    global dbConnection
-    dbConnection = MySQLdb.connect(host='127.0.0.1', port=3306, user='admin', passwd='admin123', db='editnow')
+def createDirectories():
+    if not os.path.exists(os.path.dirname(IMAGES_FOLDER_PATH)):
+        os.makedirs(os.path.dirname(IMAGES_FOLDER_PATH))
+        print('Path: \'' + IMAGES_FOLDER_PATH + '\' created')
 
 
 def runScriptAndWaitForFinish(actionScriptName, args):
@@ -68,13 +72,19 @@ def handleAction(ch, method, properties, body):
     actionScriptName = actions(actionName)
     if actionScriptName is not None:
         # TODO handle pass multiple arguments
-        inputImageName = bodyDict['inputImage']['name']
-        outputImageName = bodyDict['outputImage']['name']
+        inputImageName = bodyDict['inputImageName']
+        saveImageFromBase64(inputImageName, bodyDict['imageBase64'])
+        outputImageName = 'output_' + inputImageName
         runScriptAndWaitForFinish(actionScriptName, [IMAGES_FOLDER_PATH, inputImageName, outputImageName])
         print('Finished script')
         # changeActionStatusToComplete(bodyDict['id'])
-        sendCompletedAction(bodyDict['id'], outputImageName)
+        sendCompletedAction(bodyDict['actionId'], outputImageName)
 
+
+def saveImageFromBase64(inputImageName, imageBase64):
+    imagePath = IMAGES_FOLDER_PATH + inputImageName
+    with open(imagePath, 'wb') as image:
+        image.write(base64.b64decode(imageBase64))
 
 # def changeActionStatusToComplete(actionId):
 #     global dbConnection
@@ -86,9 +96,9 @@ def handleAction(ch, method, properties, body):
 def sendCompletedAction(actionId, outputImageName):
     completedActionChannel = rabbitMQConnection.channel()
     completedActionChannel.queue_declare(queue=COMPLETED_ACTION_QUEUE_NAME, durable=True)
-    resultData = {"id": actionId}
-    with open(IMAGES_FOLDER_PATH + outputImageName, "rb") as image:
-        resultData["imageBase64"] = base64.b64encode(image.read())
+    resultData = {'actionId': actionId}
+    with open(IMAGES_FOLDER_PATH + outputImageName, 'rb') as image:
+        resultData['imageBase64'] = base64.b64encode(image.read()).decode('ascii')
     completedActionChannel.basic_publish(exchange='', routing_key=COMPLETED_ACTION_QUEUE_NAME, body=json.dumps(resultData))
     completedActionChannel.close()
 

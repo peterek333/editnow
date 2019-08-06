@@ -7,12 +7,10 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.dto.CompletedAction;
 import pl.pl.mgr.editnow.repository.ActionRepository;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,22 +36,20 @@ public class SseEmitterService {
   }
 
   public void sendCompletedAction(CompletedAction completedAction) {
-    Optional<Action> action = actionRepository.findById(completedAction.getId());
+    Action action = actionRepository.findById(completedAction.getActionId());
 
-    action.ifPresent(a -> {
-      String userUUID = a.getUser().getUuid();
-      List<Action> actionChain = a.getUser().getActionChain();
+    String userUUID = action.getUser().getUuid();
+    List<Action> actionChain = action.getUser().getActionChain();
 
-      SseEmitter emitter = emitters.get(userUUID);
-      if (emitter != null) {
-        try {
-          emitter.send(new Gson().toJson("Works"));
-        } catch (IOException e) {
-          emitters.remove(userUUID); //dead emitter
-          e.printStackTrace();
-        }
+    SseEmitter emitter = emitters.get(userUUID);
+    if (emitter != null) {
+      try {
+        emitter.send(new Gson().toJson("Works"));
+      } catch (IOException e) {
+        emitters.remove(userUUID); //dead emitter
+        e.printStackTrace();
       }
-    });
+    }
   }
 
 }

@@ -5,7 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
+import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.dto.CompletedAction;
+import pl.pl.mgr.editnow.service.ActionService;
+import pl.pl.mgr.editnow.service.FileStorageService;
 import pl.pl.mgr.editnow.service.SseEmitterService;
 
 import java.nio.charset.StandardCharsets;
@@ -15,7 +18,9 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class CompletedActionReceiver {
 
+  private final FileStorageService fileStorageService;
   private final SseEmitterService sseEmitterService;
+  private final ActionService actionService;
 
   @RabbitHandler
   public void receive(String subscribedWordJson) {
@@ -32,6 +37,8 @@ public class CompletedActionReceiver {
   private void sendCompletedAction(String subscribedWordJson) {
     CompletedAction completedAction = new Gson().fromJson(subscribedWordJson, CompletedAction.class);
 
+    Action action = actionService.completeAction(completedAction.getActionId());
+    fileStorageService.saveImageFromBase64(completedAction.getImageBase64(), action.getOutputImage().getName());
     sseEmitterService.sendCompletedAction(completedAction);
   }
 
