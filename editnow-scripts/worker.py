@@ -4,6 +4,7 @@ import subprocess
 import pika
 from pika.exceptions import AMQPConnectionError
 import MySQLdb
+import base64
 
 ACTION_QUEUE_NAME = 'action'
 COMPLETED_ACTION_QUEUE_NAME = 'completedAction'
@@ -71,21 +72,24 @@ def handleAction(ch, method, properties, body):
         outputImageName = bodyDict['outputImage']['name']
         runScriptAndWaitForFinish(actionScriptName, [IMAGES_FOLDER_PATH, inputImageName, outputImageName])
         print('Finished script')
-        changeActionStatusToComplete(bodyDict['id'])
-        sendCompletedAction(bodyDict['id'])
+        # changeActionStatusToComplete(bodyDict['id'])
+        sendCompletedAction(bodyDict['id'], outputImageName)
 
 
-def changeActionStatusToComplete(actionId):
-    global dbConnection
-    cursor = dbConnection.cursor()
-    cursor.execute("UPDATE `actions` SET `status` = 'COMPLETED' WHERE id = %s", (actionId, ))
-    dbConnection.commit()
+# def changeActionStatusToComplete(actionId):
+#     global dbConnection
+#     cursor = dbConnection.cursor()
+#     cursor.execute("UPDATE `actions` SET `status` = 'COMPLETED' WHERE id = %s", (actionId, ))
+#     dbConnection.commit()
 
 
-def sendCompletedAction(actionId):
+def sendCompletedAction(actionId, outputImageName):
     completedActionChannel = rabbitMQConnection.channel()
     completedActionChannel.queue_declare(queue=COMPLETED_ACTION_QUEUE_NAME, durable=True)
-    completedActionChannel.basic_publish(exchange='', routing_key=COMPLETED_ACTION_QUEUE_NAME, body=json.dumps({"id": actionId}))
+    resultData = {"id": actionId}
+    with open(IMAGES_FOLDER_PATH + outputImageName, "rb") as image:
+        resultData["imageBase64"] = base64.b64encode(image.read())
+    completedActionChannel.basic_publish(exchange='', routing_key=COMPLETED_ACTION_QUEUE_NAME, body=json.dumps(resultData))
     completedActionChannel.close()
 
 

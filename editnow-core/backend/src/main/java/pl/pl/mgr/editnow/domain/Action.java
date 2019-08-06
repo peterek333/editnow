@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Action {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
   //TODO handle actionname

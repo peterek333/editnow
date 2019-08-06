@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+      <button @click="testDatabase()">Test database</button>
       <div class="row">
           <div class="col-6">
               <div class="m-2">
@@ -92,6 +93,11 @@ export default {
         .catch(error => {
           console.log(error)
         })
+    },
+    testDatabase() {
+      imageApi.testDatabase().then(response => {
+        console.log(response);
+      })
     }
   },
   created() {

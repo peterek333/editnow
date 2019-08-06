@@ -18,5 +18,8 @@ export default {
   },
   getImage(imageName) {
     return AXIOS.get(`/image/${imageName}`);
+  },
+  testDatabase() {
+    return AXIOS.get('/test/database');
   }
 }

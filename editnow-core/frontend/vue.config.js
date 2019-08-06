@@ -7,6 +7,7 @@ module.exports = {
     proxy: {
       '/api': {
         target: 'http://localhost:8098', // this configuration needs to correspond to the Spring Boot backends' application.properties server.port
+        // target: 'editnow.cfapps.io'
         ws: true,
         changeOrigin: true
       }

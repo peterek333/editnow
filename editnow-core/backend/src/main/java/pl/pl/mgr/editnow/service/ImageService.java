@@ -32,7 +32,8 @@ public class ImageService {
     private final ActionRepository actionRepository;
 
     public ImageDetails getTestSkiImage() throws IOException {
-        byte[] imageBytes = Files.readAllBytes(Paths.get("../files/skis.jpeg"));
+        showFiles("./");
+        byte[] imageBytes = Files.readAllBytes(Paths.get("files/skis.jpeg"));
 //        byte[] imageBytes = Files.readAllBytes(Paths.get("../files/skis_resized.jpg"));
 
 

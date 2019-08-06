@@ -38,6 +38,9 @@ public class UUIDCookieFilter implements Filter {
       .ifPresent(uuidCookie -> {
         String uuid = uuidCookie.getValue();
 
+        //TODO REMOVE AFTER CLOUD DEBUG
+        System.out.println("Request from user: " + uuid);
+
         addToDatabaseIfNotExist(uuid);
 
         UUIDAuthentication uuidAuthentication = new UUIDAuthentication(uuid);
@@ -47,7 +50,7 @@ public class UUIDCookieFilter implements Filter {
 
   private void addToDatabaseIfNotExist(String uuid) {
     User userFromDb = userRepository.findByUuid(uuid);
-    
+
     if (userFromDb == null) {
       User user = new User();
       user.setUuid(uuid);
