@@ -1,0 +1,12 @@
+---
+applications:
+  - name: editnow-core-3
+    memory: 1G
+    command: null
+    routes:
+    - route: editnow.cfapps.io
+    env:
+      SPRING_PROFILES_ACTIVE: cloud
+    services:
+      - rabbitmq
+      - editnow-db
