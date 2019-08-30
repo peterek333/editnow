@@ -1,3 +1,5 @@
-pika
+numpy==1.17.0
+pika==1.1.0
 opencv-python-headless==4.1.0.25
+scikit-image==0.15.0
 #mysqlclient

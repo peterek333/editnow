@@ -3,6 +3,7 @@ package pl.pl.mgr.editnow.domain;
 import lombok.Getter;
 import lombok.Setter;
 import pl.pl.mgr.editnow.domain.field.ActionStatus;
+import pl.pl.mgr.editnow.dto.ActionType;
 
 import javax.persistence.*;
 
@@ -19,6 +20,8 @@ public class Action {
   //TODO handle actionname
   private String actionName;
 
+  private ActionType actionType;
+
   @OneToOne
   private Image inputImage;
 
@@ -29,7 +32,6 @@ public class Action {
   private ActionStatus status;
 
   @ManyToOne
-//  @JoinColumn(name = "action_id")
   @JoinColumn
   private User user;
 

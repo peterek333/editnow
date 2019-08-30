@@ -66,7 +66,7 @@ def runScriptAndWaitForFinish(actionScriptName, args):
 
 
 def handleAction(ch, method, properties, body):
-    bodyDict = json.loads(body)
+    bodyDict = json.loads(body.decode('utf-8'))
     actionName = bodyDict['actionName']
     print('Handle action')
     actionScriptName = actions(actionName)

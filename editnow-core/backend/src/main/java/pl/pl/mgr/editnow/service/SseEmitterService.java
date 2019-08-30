@@ -39,7 +39,7 @@ public class SseEmitterService {
     Action action = actionRepository.findById(completedAction.getActionId());
 
     String userUUID = action.getUser().getUuid();
-    List<Action> actionChain = action.getUser().getActionChain();
+//    List<Action> actionChain = action.getUser().getActionChain();
 
     SseEmitter emitter = emitters.get(userUUID);
     if (emitter != null) {

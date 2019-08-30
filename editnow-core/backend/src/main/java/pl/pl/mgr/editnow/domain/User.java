@@ -17,11 +17,8 @@ public class User {
 
     private String uuid;
 
-//    @OneToMany(mappedBy = "actionId")
-//    @JoinColumn(name="action_id", referencedColumnName="id")
-//    @OrderColumn(name="")
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private transient List<Action> actionChain;
+    @OneToOne(fetch = FetchType.LAZY) //, orphanRemoval = true)
+    @JoinColumn(name = "actionChain_id")
+    private ActionChain actionChain;
 
 }
