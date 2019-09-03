@@ -5,8 +5,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.pl.mgr.editnow.domain.User;
 import pl.pl.mgr.editnow.repository.UserRepository;
-
-import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
@@ -20,7 +18,6 @@ public class UserService {
 
     User newUser = new User();
     newUser.setUuid(generatedUUID);
-//    newUser.setActionChain(new ArrayList<>());
     userRepository.save(newUser);
 
     return generatedUUID;

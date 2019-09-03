@@ -1,23 +1,25 @@
 package pl.pl.mgr.editnow.controller;
 
-import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.pl.mgr.editnow.domain.Action;
+import pl.pl.mgr.editnow.domain.ActionChain;
 import pl.pl.mgr.editnow.dto.ActionRequest;
-import pl.pl.mgr.editnow.dto.ActionType;
-import pl.pl.mgr.editnow.dto.ImageType;
+import pl.pl.mgr.editnow.service.ActionService;
 
 @RestController
 @RequestMapping("/api/action")
 @RequiredArgsConstructor
 public class ActionController {
 
+  private final ActionService actionService;
+
   @PostMapping
-  public ActionRequest startAction() {
-    return new ActionRequest(ActionType.MORPHOLOGY, "base64", ImageType.JPG, ImmutableMap.of("param1", 1, "anotherParam", 22));
+  public Action startAction(@RequestBody ActionRequest actionRequest) {
+    return actionService.startAction(actionRequest);
   }
 
   @PostMapping("/test")
@@ -25,5 +27,9 @@ public class ActionController {
     return actionRequest;
   }
 
+  @PostMapping("/chain/new")
+  public ActionChain newActionChain() {
+    return actionService.newActionChain();
+  }
 
 }

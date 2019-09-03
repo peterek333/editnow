@@ -42,15 +42,15 @@ public class InitData {
   public void testData() {
     ActionChain actionChain = new ActionChain();
     Set<Action> actions = new LinkedHashSet<>();
-    actionChainRepository.save(actionChain);
+//    actionChainRepository.save(actionChain);
 
     User user = new User();
     user.setUuid("test");
     user.setActionChain(actionChain);
     userRepository.save(user);
 
-    Action actionGrayscale = createAction(ActionType.GRAYSCALE, user, actionChain);
-    Action actionMorphology = createAction(ActionType.MORPHOLOGY, user, actionChain);
+    Action actionGrayscale = createAction(ActionType.GRAYSCALE, user);
+    Action actionMorphology = createAction(ActionType.MORPHOLOGY, user);
 
     actions.add(actionGrayscale);
     actions.add(actionMorphology);
@@ -58,7 +58,7 @@ public class InitData {
     actionChainRepository.save(actionChain);
   }
 
-  private Action createAction(ActionType actionType, User user, ActionChain actionChain) {
+  private Action createAction(ActionType actionType, User user) {
     Image inputImage = new Image();
     inputImage.setName("input_" + actionType.name());
     inputImage.setType(ImageType.JPG);
@@ -72,7 +72,6 @@ public class InitData {
     action.setActionType(actionType);
     action.setStatus(ActionStatus.COMPLETED);
     action.setUser(user);
-//    action.setActionChain(actionChain);
 
     imageRepository.save(inputImage);
     imageRepository.save(outputImage);

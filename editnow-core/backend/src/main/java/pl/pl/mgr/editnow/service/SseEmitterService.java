@@ -6,10 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.dto.CompletedAction;
-import pl.pl.mgr.editnow.repository.ActionRepository;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -19,9 +17,7 @@ public class SseEmitterService {
   private final Map<String, SseEmitter> emitters = new HashMap<>();
 
   private final UserService userService;
-
-  //TODO create services for repositories?
-  private final ActionRepository actionRepository;
+  private final ActionService actionService;
 
   public void addEmitterForUser(SseEmitter emitter) {
     String userUUID = userService.getUserUUIDFromContext();
@@ -36,7 +32,7 @@ public class SseEmitterService {
   }
 
   public void sendCompletedAction(CompletedAction completedAction) {
-    Action action = actionRepository.findById(completedAction.getActionId());
+    Action action = actionService.getAction(completedAction.getActionId());
 
     String userUUID = action.getUser().getUuid();
 //    List<Action> actionChain = action.getUser().getActionChain();
