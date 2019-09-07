@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.domain.Image;
-import pl.pl.mgr.editnow.domain.field.ActionStatus;
+import pl.pl.mgr.editnow.dto.action.ActionStatus;
 import pl.pl.mgr.editnow.dto.ActionQueueItem;
 import pl.pl.mgr.editnow.dto.ActionRequest;
 import pl.pl.mgr.editnow.dto.ImageDetails;

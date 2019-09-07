@@ -20,12 +20,12 @@ def morph_types(morphType):
 # argv[1] - images path like "./images/"
 # argv[2] - input image name (before processed)
 # argv[3} - output image name (after processed)
-path = '../'
-imageName = 'test_j_color.png'
+path = './'
+imageName = 'test_j.png'
 processedImageName = 'test_j_out.png'
-kernelRows = 2
+kernelRows = 3
 kernelCols = 5
-morphTypeIndex = 0
+morphTypeIndex = 5
 
 # calculate before
 morphType = morph_types(morphTypeIndex)
@@ -41,8 +41,8 @@ image = cv2.imread(path + imageName)
 # ### work
 kernel = np.ones((kernelRows, kernelCols), np.uint8)
 print(kernel)
-morphology_transform = cv2.morphologyEx(image, morphType, kernel)  # iterations = X
+image = cv2.morphologyEx(image, morphType, kernel)  # iterations = X
 # ### end work
 
 # save image
-cv2.imwrite(path + processedImageName, morphology_transform)
+cv2.imwrite(path + processedImageName, image)

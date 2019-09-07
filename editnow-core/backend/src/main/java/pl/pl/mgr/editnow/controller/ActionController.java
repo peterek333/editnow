@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.domain.ActionChain;
 import pl.pl.mgr.editnow.dto.ActionRequest;
+import pl.pl.mgr.editnow.dto.action.ActionType;
+import pl.pl.mgr.editnow.dto.ImageType;
 import pl.pl.mgr.editnow.service.ActionService;
 
 @RestController
@@ -25,6 +27,11 @@ public class ActionController {
   @PostMapping("/test")
   public ActionRequest startActionTest(@RequestBody ActionRequest actionRequest) {
     return actionRequest;
+  }
+
+  @PostMapping("/test2")
+  public ActionRequest startActionTest2() {
+    return new ActionRequest(ActionType.MORPHOLOGY_TRANSFORM, "", ImageType.JPG, null);
   }
 
   @PostMapping("/chain/new")

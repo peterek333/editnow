@@ -1,0 +1,6 @@
+# GRAYSCALE
+image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# MORPHOLOGY_TRANSFORM
+kernel = np.ones(({0}, {1}), np.uint8)
+image = cv2.morphologyEx(image, {2}, kernel)

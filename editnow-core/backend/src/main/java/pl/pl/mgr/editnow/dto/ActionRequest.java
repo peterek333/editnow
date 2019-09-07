@@ -2,6 +2,8 @@ package pl.pl.mgr.editnow.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import pl.pl.mgr.editnow.dto.action.ActionType;
+
 import java.util.Map;
 
 @Getter

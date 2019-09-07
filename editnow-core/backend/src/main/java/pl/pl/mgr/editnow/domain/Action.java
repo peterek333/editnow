@@ -3,8 +3,11 @@ package pl.pl.mgr.editnow.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import pl.pl.mgr.editnow.domain.field.ActionStatus;
-import pl.pl.mgr.editnow.dto.ActionType;
+import pl.pl.mgr.editnow.domain.Image;
+import pl.pl.mgr.editnow.domain.User;
+import pl.pl.mgr.editnow.dto.action.ActionType;
+import pl.pl.mgr.editnow.dto.action.ActionStatus;
+
 import javax.persistence.*;
 import java.util.Map;
 
@@ -18,6 +21,7 @@ public class Action {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  @Enumerated(EnumType.STRING)
   private ActionType actionType;
 
   @OneToOne

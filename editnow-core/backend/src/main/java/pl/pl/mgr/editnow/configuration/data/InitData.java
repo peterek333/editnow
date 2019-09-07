@@ -8,10 +8,11 @@ import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.domain.ActionChain;
 import pl.pl.mgr.editnow.domain.Image;
 import pl.pl.mgr.editnow.domain.User;
-import pl.pl.mgr.editnow.domain.field.ActionStatus;
-import pl.pl.mgr.editnow.dto.ActionType;
+import pl.pl.mgr.editnow.dto.action.ActionStatus;
+import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.dto.ImageType;
 import pl.pl.mgr.editnow.mock.MockData;
+import pl.pl.mgr.editnow.mock.ActionCodeImporter;
 import pl.pl.mgr.editnow.repository.ActionChainRepository;
 import pl.pl.mgr.editnow.repository.ActionRepository;
 import pl.pl.mgr.editnow.repository.ImageRepository;
@@ -26,6 +27,8 @@ public class InitData {
 
   private final FileStorageService fileStorageService;
   private final MockData mockData;
+  private final ActionCodeImporter actionCodeImporter;
+
   private final ActionChainRepository actionChainRepository;
   private final ActionRepository actionRepository;
   private final ImageRepository imageRepository;
@@ -35,6 +38,7 @@ public class InitData {
   public void createDirectoriesAndMockData() {
     fileStorageService.createDirectories();
     mockData.mock(fileStorageService);
+    actionCodeImporter.importActionCodes();
 
     testData();
   }
@@ -50,7 +54,7 @@ public class InitData {
     userRepository.save(user);
 
     Action actionGrayscale = createAction(ActionType.GRAYSCALE, user);
-    Action actionMorphology = createAction(ActionType.MORPHOLOGY, user);
+    Action actionMorphology = createAction(ActionType.MORPHOLOGY_TRANSFORM, user);
 
     actions.add(actionGrayscale);
     actions.add(actionMorphology);
