@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 public class ActionCodeImporter {
 
   private static final Logger LOGGER = Logger.getLogger(ActionCodeImporter.class.getName());
-  private static final String FUNCTIONS_CODE_FILE_PATH = "code/functions-code.txt";
+  private static final String FUNCTIONS_CODE_FILE_PATH = "code/actions-code.txt";
   private static final String ACTION_CODE_START_SIGN = "#";
 
   private final Map<ActionType, ActionCode> actionCodes = createActionCodes();

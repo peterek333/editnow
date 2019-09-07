@@ -18,8 +18,8 @@ import pl.pl.mgr.editnow.repository.ActionRepository;
 import pl.pl.mgr.editnow.repository.ImageRepository;
 import pl.pl.mgr.editnow.repository.UserRepository;
 import pl.pl.mgr.editnow.service.FileStorageService;
-import java.util.LinkedHashSet;
-import java.util.Set;
+
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -76,6 +76,13 @@ public class InitData {
     action.setActionType(actionType);
     action.setStatus(ActionStatus.COMPLETED);
     action.setUser(user);
+    if (actionType == ActionType.MORPHOLOGY_TRANSFORM) {
+      Map<String, Integer> parametersMorphology = new LinkedHashMap<>();
+      parametersMorphology.put("kernelRows", 4);
+      parametersMorphology.put("kernelCols", 5);
+      parametersMorphology.put("morphType", 2);
+      action.setParameters(parametersMorphology);
+    }
 
     imageRepository.save(inputImage);
     imageRepository.save(outputImage);
