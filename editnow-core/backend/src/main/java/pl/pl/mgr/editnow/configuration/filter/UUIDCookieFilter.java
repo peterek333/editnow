@@ -11,10 +11,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 @RequiredArgsConstructor
 public class UUIDCookieFilter implements Filter {
+
+  private static final Logger LOGGER = Logger.getLogger(UUIDCookieFilter.class.getName());
 
   private static final String USER_UUID_COOKIE = "userUUID";
   private final UserRepository userRepository;
@@ -38,8 +42,7 @@ public class UUIDCookieFilter implements Filter {
       .ifPresent(uuidCookie -> {
         String uuid = uuidCookie.getValue();
 
-        //TODO REMOVE AFTER CLOUD DEBUG
-        System.out.println("Request from user: " + uuid);
+        LOGGER.log(Level.INFO, "Request from user: " + uuid);
 
         addToDatabaseIfNotExist(uuid);
 

@@ -10,10 +10,7 @@ import pl.pl.mgr.editnow.domain.User;
 import pl.pl.mgr.editnow.dto.PythonLibrary;
 import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.repository.ActionCodeRepository;
-
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -28,51 +25,58 @@ public class ActionCodeService {
   public String generateCodeFromActionChain() {
     User user = userService.getUserFromContext();
 
-    ActionChain actionChain = user.getActionChain();
-    Set<Action> actions = actionChain.getActions();
+    Set<Action> actions = user.getActionChain().getActions();
 
     StringBuilder generatedCode = new StringBuilder();
-    AtomicReference<AtomicBoolean> firstLibraryOpenCv = new AtomicReference<>();
-    Set<PythonLibrary> librariesImport = new HashSet<>();
+    boolean insertedLoadImage = false;
+    Set<PythonLibrary> importedLibraries = new HashSet<>();
 
-    actions.forEach(action -> {
+    for(Action action: actions) {
       ActionType actionType = action.getActionType();
       ActionCode actionCode = actionCodeRepository.findActionCodeByActionType(actionType);
-      if (firstLibraryOpenCv.get() == null) {
-        firstLibraryOpenCv.set(
-          new AtomicBoolean(actionCode.getPythonLibraries().contains(PythonLibrary.OPEN_CV)));
+
+      if ( !insertedLoadImage) {
+        insertLoadImage(generatedCode, actionCode.getPythonLibraries());
+        insertedLoadImage = true;
       }
 
-      Map<String, Integer> parameters = action.getParameters();
+      importedLibraries.addAll(actionCode.getPythonLibraries());  //add only unique libraries
 
-      String code = actionCode.getCode();
-      if (parameters.size() > 0) {
-        code = MapFormat.format(code, parameters);
-      }
+      String code = prepareCode(actionCode, action.getParameters());
 
-      librariesImport.addAll(actionCode.getPythonLibraries());  //add only unique libraries
-
-      //convert image BGR -> RGB / RGB -> BGR for cv <-> scikit
+      //TODO convert image BGR -> RGB / RGB -> BGR for cv <-> scikit
 
       generatedCode.append("# Action name: ").append(actionType.name()).append(NEW_LINE);
       generatedCode.append(code).append(NEW_LINE);
-    });
-    if (firstLibraryOpenCv.get() != null) {
-      insertLoadImage(generatedCode, firstLibraryOpenCv.get());
     }
-    insertImports(generatedCode, librariesImport);
-    //insert load image by opencv depend on firstly used
+
+    insertImports(generatedCode, importedLibraries);
+//    appendSaveImage(generatedCode, lastLibraryOpenCv);  //TODO
 
     return generatedCode.toString();
   }
 
-  private void insertLoadImage(StringBuilder generatedCode, AtomicBoolean atomicBoolean) {
-    generatedCode.insert(0, atomicBoolean.get() ? LOAD_IMAGE_OPEN_CV : "LOAD_IMAGE_BY_SCIKIT");
+  private void insertLoadImage(StringBuilder generatedCode, List<PythonLibrary> firstActionPythonLibraries) {
+    String loadImageCode = firstActionPythonLibraries.contains(PythonLibrary.OPEN_CV)
+      ? LOAD_IMAGE_OPEN_CV
+      : "LOAD_IMAGE_BY_SCIKIT";
+
+    generatedCode.append(loadImageCode);
   }
 
-  private void insertImports(StringBuilder generatedCode, Set<PythonLibrary> librariesImport) {
+  private String prepareCode(ActionCode actionCode, Map<String, Integer> parameters) {
+    String code = actionCode.getCode();
+
+    if (parameters.size() > 0) {
+      code = MapFormat.format(code, parameters);
+    }
+
+    return code;
+  }
+
+  private void insertImports(StringBuilder generatedCode, Set<PythonLibrary> importedLibraries) {
     StringBuilder generatedImports = new StringBuilder();
-    librariesImport.forEach(libraryImport ->
+    importedLibraries.forEach(libraryImport ->
       generatedImports.append(libraryImport.importLine()).append(NEW_LINE));
     generatedImports.append(NEW_LINE);
 
