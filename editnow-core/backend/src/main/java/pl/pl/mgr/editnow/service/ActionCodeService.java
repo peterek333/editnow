@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.openide.util.MapFormat;
 import org.springframework.stereotype.Service;
 import pl.pl.mgr.editnow.domain.Action;
-import pl.pl.mgr.editnow.domain.ActionChain;
 import pl.pl.mgr.editnow.domain.ActionCode;
 import pl.pl.mgr.editnow.domain.User;
 import pl.pl.mgr.editnow.dto.PythonLibrary;
@@ -16,7 +15,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ActionCodeService {
 
-  private static final String LOAD_IMAGE_OPEN_CV = "image = cv2.imread(\"path/to/your/image.jpg\")\n\n";
+  private static final String LOAD_IMAGE_IN_OPEN_CV = "image = cv2.imread(\"path/to/your/image.jpg\")\n\n";
   private static final String NEW_LINE = "\n";
 
   private final UserService userService;
@@ -40,7 +39,7 @@ public class ActionCodeService {
         insertedLoadImage = true;
       }
 
-      importedLibraries.addAll(actionCode.getPythonLibraries());  //add only unique libraries
+      importedLibraries.addAll(actionCode.getPythonLibraries());  //SET type of collections - add only unique libraries
 
       String code = prepareCode(actionCode, action.getParameters());
 
@@ -58,7 +57,7 @@ public class ActionCodeService {
 
   private void insertLoadImage(StringBuilder generatedCode, List<PythonLibrary> firstActionPythonLibraries) {
     String loadImageCode = firstActionPythonLibraries.contains(PythonLibrary.OPEN_CV)
-      ? LOAD_IMAGE_OPEN_CV
+      ? LOAD_IMAGE_IN_OPEN_CV
       : "LOAD_IMAGE_BY_SCIKIT";
 
     generatedCode.append(loadImageCode);

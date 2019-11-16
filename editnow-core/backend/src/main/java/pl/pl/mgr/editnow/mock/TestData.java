@@ -1,45 +1,35 @@
-package pl.pl.mgr.editnow.configuration.data;
+package pl.pl.mgr.editnow.mock;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.domain.ActionChain;
 import pl.pl.mgr.editnow.domain.Image;
 import pl.pl.mgr.editnow.domain.User;
+import pl.pl.mgr.editnow.dto.ImageType;
 import pl.pl.mgr.editnow.dto.action.ActionStatus;
 import pl.pl.mgr.editnow.dto.action.ActionType;
-import pl.pl.mgr.editnow.dto.ImageType;
-import pl.pl.mgr.editnow.mock.MockData;
-import pl.pl.mgr.editnow.mock.ActionCodeImporter;
 import pl.pl.mgr.editnow.repository.ActionChainRepository;
 import pl.pl.mgr.editnow.repository.ActionRepository;
 import pl.pl.mgr.editnow.repository.ImageRepository;
 import pl.pl.mgr.editnow.repository.UserRepository;
-import pl.pl.mgr.editnow.service.FileStorageService;
-
-import java.util.*;
+import pl.pl.mgr.editnow.service.configuration.InitializationDatabaseData;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class InitData {
-
-  private final FileStorageService fileStorageService;
-  private final MockData mockData;
-  private final ActionCodeImporter actionCodeImporter;
+public class TestData implements InitializationDatabaseData {
 
   private final ActionChainRepository actionChainRepository;
   private final ActionRepository actionRepository;
   private final ImageRepository imageRepository;
   private final UserRepository userRepository;
 
-  @EventListener(ApplicationReadyEvent.class)
-  public void createDirectoriesAndMockData() {
-    fileStorageService.createDirectories();
-    mockData.mock(fileStorageService);
-    actionCodeImporter.importActionCodes();
-
+  @Override
+  public void insertData() {
     testData();
   }
 

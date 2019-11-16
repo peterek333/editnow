@@ -10,9 +10,13 @@ import pl.pl.mgr.editnow.domain.User;
 import pl.pl.mgr.editnow.dto.action.ActionStatus;
 import pl.pl.mgr.editnow.dto.ActionQueueItem;
 import pl.pl.mgr.editnow.dto.ActionRequest;
+import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.repository.ActionRepository;
 import pl.pl.mgr.editnow.service.queue.ActionSender;
+
+import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -90,4 +94,7 @@ public class ActionService {
 //      .orElseThrow(() -> new Exception("Action id = " + id + " not found"));
   }
 
+  public List<ActionType> getActionTypes() {
+    return Arrays.asList(ActionType.values());
+  }
 }

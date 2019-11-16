@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const AXIOS = axios.create({
-  baseURL: `/api`,
+  baseURL: `/api/image`,
   // timeout: 1000
 });
 
@@ -17,7 +17,7 @@ export default {
     });
   },
   getImage(imageName) {
-    return AXIOS.get(`/image/${imageName}`);
+    return AXIOS.get(`/${imageName}`);
   },
   testDatabase() {
     return AXIOS.get('/test/database');

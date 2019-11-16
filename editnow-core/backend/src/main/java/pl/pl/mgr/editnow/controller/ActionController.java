@@ -9,6 +9,7 @@ import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.dto.ImageType;
 import pl.pl.mgr.editnow.service.ActionCodeService;
 import pl.pl.mgr.editnow.service.ActionService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/action")
@@ -21,6 +22,11 @@ public class ActionController {
   @PostMapping
   public Action startAction(@RequestBody ActionRequest actionRequest) {
     return actionService.startAction(actionRequest);
+  }
+
+  @GetMapping("/types")
+  public List<ActionType> getActionTypes() {
+    return actionService.getActionTypes();
   }
 
   @PostMapping("/test")
@@ -42,5 +48,6 @@ public class ActionController {
   public String generateCodeFromActionChain() {
     return actionCodeService.generateCodeFromActionChain();
   }
+
 
 }

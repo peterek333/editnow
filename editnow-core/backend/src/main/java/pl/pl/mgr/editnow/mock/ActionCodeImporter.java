@@ -24,15 +24,21 @@ public class ActionCodeImporter {
   private static final String FUNCTIONS_CODE_FILE_PATH = "code/actions-code.txt";
   private static final String ACTION_CODE_START_SIGN = "#";
 
+  private final ActionCodeRepository actionCodeRepository;
+
   private final Map<ActionType, ActionCode> actionCodes = createActionCodes();
 
-  @SuppressWarnings("unchecked")
   private Map<ActionType, ActionCode> createActionCodes() {
-    Object[][] actionWithLibraries = {
+    Object[][] pythonLibrariesInActionType = {
       {ActionType.GRAYSCALE, Collections.singletonList(PythonLibrary.OPEN_CV)},
       {ActionType.MORPHOLOGY_TRANSFORM, Arrays.asList(PythonLibrary.OPEN_CV, PythonLibrary.NUMPY)},
     };
 
+    return prepareActionCodes(pythonLibrariesInActionType);
+  }
+
+  @SuppressWarnings("unchecked")
+  private Map<ActionType, ActionCode> prepareActionCodes(Object[][] actionWithLibraries) {
     return Stream.of(actionWithLibraries)
       .collect(Collectors.toMap(
         actionData -> (ActionType) actionData[0],
@@ -44,8 +50,6 @@ public class ActionCodeImporter {
           return actionCode;
         }));
   }
-
-  private final ActionCodeRepository actionCodeRepository;
 
   public void importActionCodes() {
     Resource resource = new ClassPathResource(FUNCTIONS_CODE_FILE_PATH);

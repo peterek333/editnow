@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <changeSet author="unkown" id="changelog-1.0.1">
+        <insert schemaName="editnow" tableName="actions">
+            <column name="action_type" value="GRAYSCALE1" />
+            <column name="status" value="PEND" />
+        </insert>
+    </changeSet>
+    <changeSet author="unkown" id="changelog-1.0.2">
+        <sql endDelimiter=";" splitStatements="true" stripComments="true">
+            INSERT INTO actions (action_type, status) values ('GRAYSCALE2', 'PEND2');
+            INSERT INTO actions (action_type, status) values ('GRAYSCALE3', 'PEND3');
+        </sql>
+    </changeSet>
+</databaseChangeLog> 
