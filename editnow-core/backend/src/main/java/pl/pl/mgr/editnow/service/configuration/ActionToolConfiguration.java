@@ -21,10 +21,13 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
     Map<ActionToolCategory, List<ActionType>> actionTypesInCategory = new HashMap<>();
 
     actionTypesInCategory.put(ActionToolCategory.PREPROCESSING,
-      Arrays.asList(ActionType.GRAYSCALE));
+      Arrays.asList(ActionType.GRAYSCALE, ActionType.RGB_CHANNEL, ActionType.MEDIAN_BLUR));
 
     actionTypesInCategory.put(ActionToolCategory.MORPHOLOGY_OPERATIONS,
       Arrays.asList(ActionType.MORPHOLOGY_TRANSFORM));
+
+    actionTypesInCategory.put(ActionToolCategory.SEGMENTATION,
+      Arrays.asList(ActionType.THRESHOLD));
 
     return actionTypesInCategory;
   }

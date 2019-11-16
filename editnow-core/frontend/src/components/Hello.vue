@@ -117,12 +117,21 @@ export default {
       reader.onloadend = function() {
         objectContext.inputImage = imageUtil.getImageStructureFromFullImageBase64(reader.result);
         console.log(objectContext.inputImage);
+
+        objectContext.emitIsImageEvent(true);
       };
       reader.readAsDataURL(file);
+    },
+    emitIsImageEvent(isImage) {
+      this.$eventBus.$emit('is-image-event', isImage);
     }
   },
   created() {
     //this.waitForCompletedAction(); //TODO check performance
+    this.$eventBus.$on('action-tool-click-event-bus', (data) => {
+      console.log('from event bus', data.name, data);
+    });
+    this.emitIsImageEvent(false);
   }
 }
 

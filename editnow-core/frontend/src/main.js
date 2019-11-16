@@ -7,7 +7,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import store from './store'
 
 Vue.config.productionTip = false;
-
+Vue.prototype.$eventBus = new Vue();
 Vue.use(BootstrapVue);
 
 new Vue({

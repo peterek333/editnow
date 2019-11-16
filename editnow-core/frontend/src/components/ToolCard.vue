@@ -11,40 +11,55 @@
                     v-bind:visible="visible"
                     v-bind:accordion="accordion" role="tabpanel">
             <b-card-body>
-                <button class="btn"><i class="fa fa-home mb-2"></i></button>
-                <button class="btn"><i class="fa fa-home"></i></button>
-                <button class="btn"><i class="fa fa-home"></i></button>
                 <b-card-text>{{ accordionId }}</b-card-text>
+                <button v-for="actionTool in actionTools"
+                        :key="actionTool.name"
+                        v-on:click="emitActionTool(actionTool)"
+                        :disabled="!canUseActionTools"
+                        class="btn btn-primary">
+                    {{ actionTool.name }}
+                </button>
             </b-card-body>
         </b-collapse>
     </b-card>
 </template>
 
 <script>
-    export default {
-        name: "ToolCard",
-        data () {
-            return {
-                accordionId: this.accordion + '-' + this.accordionName
-            }
-        },
-        props: {
-            accordion: String,
-            accordionName: {
-                type: String,
-                required: true
-            },
-            visible: {
-                type: Boolean,
-                default: function () {
-                    return false
-                }
-            }
+  export default {
+    name: "ToolCard",
+    data() {
+      return {
+        accordionId: this.accordion + '-' + this.accordionName,
+        canUseActionTools: false
+      }
+    },
+    props: {
+      accordion: String,
+      accordionName: {
+        type: String,
+        required: true
+      },
+      actionTools: Array,
+      visible: {
+        type: Boolean,
+        default: function () {
+          return false
         }
-        // props: [
-        //     'accordion', 'accordionName', 'visible'
-        // ]
+      }
+    },
+    methods: {
+      emitActionTool(actionTool) {
+        this.$emit('action-tool-click-event', actionTool);
+        this.$eventBus.$emit('action-tool-click-event-bus', actionTool);
+      }
+    },
+    created() {
+      const context = this;
+      this.$eventBus.$on('is-image-event', (isImage) => {
+        context.canUseActionTools = isImage;
+      })
     }
+  }
 </script>
 
 <style scoped>
