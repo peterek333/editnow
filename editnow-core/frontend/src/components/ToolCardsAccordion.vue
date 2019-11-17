@@ -22,7 +22,7 @@
       name: "ToolCardsAccordion",
       components: {ToolCard},
       data () {
-        const toolCardsAccordion = 'Narzedzia';
+        const toolCardsAccordion = 'Narzędzia';
         return {
           toolCardsTitle: toolCardsAccordion,
           toolCards: [
@@ -42,13 +42,13 @@
               const actionToolsInCategory = response.data;
               console.log(actionToolsInCategory);
 
-              actionToolsInCategory.forEach(actionToolInCategory => {
+              actionToolsInCategory.forEach( (actionToolInCategory, index) => {
                 const categoryName = actionToolInCategory.categoryName;
                 context.toolCards.push({
                   accordion: context.toolCardsTitle,
                   accordionName: categoryName,
                   actionTools: actionToolInCategory.actionTools,
-                  visible: false
+                  visible: index === 0 //first will be open
                 });
               })
 
@@ -63,9 +63,6 @@
       },
       created() {
         this.getActionToolsConfiguration();
-        this.$eventBus.$on('action-tool-click-event-bus', (data) => {
-          console.log('from event bus', data.name, data);
-        });
       },
     }
 </script>

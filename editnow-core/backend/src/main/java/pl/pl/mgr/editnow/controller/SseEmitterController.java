@@ -1,9 +1,7 @@
 package pl.pl.mgr.editnow.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import pl.pl.mgr.editnow.service.SseEmitterService;
 
@@ -29,6 +27,11 @@ public class SseEmitterController {
     });
 
     return emitter;
+  }
+
+  @DeleteMapping("/completed-action/close")
+  public void closeCompletedActionEmitter() {
+    sseEmitterService.removeEmitter();
   }
 
 }

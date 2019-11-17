@@ -8,6 +8,7 @@ import pl.pl.mgr.editnow.domain.ActionChain;
 import pl.pl.mgr.editnow.domain.Image;
 import pl.pl.mgr.editnow.domain.User;
 import pl.pl.mgr.editnow.dto.ActionDto;
+import pl.pl.mgr.editnow.dto.ImageDetails;
 import pl.pl.mgr.editnow.dto.action.ActionStatus;
 import pl.pl.mgr.editnow.dto.ActionQueueItem;
 import pl.pl.mgr.editnow.dto.ActionRequest;
@@ -16,7 +17,9 @@ import pl.pl.mgr.editnow.mapper.ActionDtoMapper;
 import pl.pl.mgr.editnow.repository.ActionRepository;
 import pl.pl.mgr.editnow.service.queue.ActionSender;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -46,12 +49,23 @@ public class ActionService {
 
     Action action = createAction(actionRequest, user);
 
-    user.getActionChain().getActions().add(action);
+    addActionToActionChain(user, action);
 
     ActionQueueItem actionQueueItem = createActionQueueItem(action, actionRequest.getImageBase64());
     actionSender.send(actionQueueItem);
 
     return actionDtoMapper.map(action);  //TODO handle action on frontend OR change to outputfilename
+  }
+
+  private void addActionToActionChain(User user, Action action) {
+    ActionChain actionChain = user.getActionChain();
+    if (actionChain == null) {
+      actionChain = new ActionChain();
+      actionChain.setActions(Collections.singleton(action));
+      user.setActionChain(actionChain);
+    } else {
+      actionChain.getActions().add(action);
+    }
   }
 
   private ActionQueueItem createActionQueueItem(Action action, String imageBase64) {
@@ -100,4 +114,13 @@ public class ActionService {
   public List<ActionType> getActionTypes() {
     return Arrays.asList(ActionType.values());
   }
+
+  public ImageDetails getOutputImageByActionId(long actionId) throws IOException {
+    Action action = actionRepository.findById(actionId);
+
+    String outputImageName = action.getOutputImage().getName();
+
+    return imageService.getBase64Image(outputImageName);
+  }
+
 }

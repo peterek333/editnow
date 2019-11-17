@@ -3,6 +3,7 @@ package pl.pl.mgr.editnow.service;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.dto.CompletedAction;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+//@Transactional  //TODO performance?
 public class SseEmitterService {
 
   private final Map<String, SseEmitter> emitters = new HashMap<>();
@@ -19,12 +21,14 @@ public class SseEmitterService {
   private final UserService userService;
   private final ActionService actionService;
 
+  @Transactional
   public void addEmitterForUser(SseEmitter emitter) {
     String userUUID = userService.getUserUUIDFromContext();
 
     emitters.put(userUUID, emitter);
   }
 
+  @Transactional
   public void removeEmitter() {
     String userUUID = userService.getUserUUIDFromContext();
 

@@ -25,6 +25,8 @@
 </template>
 
 <script>
+  import constVars from '../mixins/const-variables';
+
   export default {
     name: "ToolCard",
     data() {
@@ -49,13 +51,12 @@
     },
     methods: {
       emitActionTool(actionTool) {
-        this.$emit('action-tool-click-event', actionTool);
-        this.$eventBus.$emit('action-tool-click-event-bus', actionTool);
+        this.$eventBus.$emit(constVars.EVENT_ACTION_TOOL_CLICK, actionTool);
       }
     },
     created() {
       const context = this;
-      this.$eventBus.$on('is-image-event', (isImage) => {
+      this.$eventBus.$on(constVars.EVENT_IS_IMAGE, (isImage) => {
         context.canUseActionTools = isImage;
       })
     }

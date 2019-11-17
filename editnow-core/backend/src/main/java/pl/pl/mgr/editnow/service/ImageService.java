@@ -79,8 +79,8 @@ public class ImageService {
     }
 
     public Image saveInputImage(ActionRequest actionRequest) {
-      String imageName = "testUUID";
-    //    fileStorageService.saveRenamedToUUID(actionRequest.getImageBase64(), actionRequest.getImageType());
+      String imageName =
+        fileStorageService.saveRenamedToUUID(actionRequest.getImageBase64(), actionRequest.getImageType());
 
       Image image = imageFactory.getInputImage(imageName, actionRequest.getImageType());
       imageRepository.save(image);

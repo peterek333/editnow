@@ -5,10 +5,13 @@ import org.springframework.web.bind.annotation.*;
 import pl.pl.mgr.editnow.domain.ActionChain;
 import pl.pl.mgr.editnow.dto.ActionDto;
 import pl.pl.mgr.editnow.dto.ActionRequest;
+import pl.pl.mgr.editnow.dto.ImageDetails;
 import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.dto.ImageType;
 import pl.pl.mgr.editnow.service.ActionCodeService;
 import pl.pl.mgr.editnow.service.ActionService;
+
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -22,6 +25,11 @@ public class ActionController {
   @PostMapping
   public ActionDto startAction(@RequestBody ActionRequest actionRequest) {
     return actionService.startAction(actionRequest);
+  }
+
+  @GetMapping("/{actionId}/output")
+  public ImageDetails getOutputImageByActionId(@PathVariable long actionId) throws IOException {
+    return actionService.getOutputImageByActionId(actionId);
   }
 
   @GetMapping("/types")

@@ -3,6 +3,7 @@ package pl.pl.mgr.editnow.configuration.filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pl.pl.mgr.editnow.domain.User;
 import pl.pl.mgr.editnow.repository.UserRepository;
 
@@ -29,6 +30,7 @@ public class UUIDCookieFilter implements Filter {
 
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
+      LOGGER.log(Level.INFO, "Request on path: " + request.getRequestURI());
       setUUIDFromCookiesInContext(cookies);
     }
 
@@ -51,7 +53,8 @@ public class UUIDCookieFilter implements Filter {
       });
   }
 
-  private void addToDatabaseIfNotExist(String uuid) {
+  @Transactional
+  void addToDatabaseIfNotExist(String uuid) {
     User userFromDb = userRepository.findByUuid(uuid);
 
     if (userFromDb == null) {

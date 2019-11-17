@@ -19,7 +19,7 @@ dbConnection = None
 # TODO change related function/action - python scripts to database
 def actions(name):
     acs = {
-       'grayscale': 'preprocessing/grayscale_opencv.py'
+       'GRAYSCALE': 'preprocessing/grayscale_opencv.py'
     }
     return acs.get(name, None)
 
@@ -70,6 +70,7 @@ def handleAction(ch, method, properties, body):
     actionName = bodyDict['actionName']
     print('Handle action')
     actionScriptName = actions(actionName)
+    print(actionScriptName)
     if actionScriptName is not None:
         # TODO handle pass multiple arguments
         inputImageName = bodyDict['inputImageName']
