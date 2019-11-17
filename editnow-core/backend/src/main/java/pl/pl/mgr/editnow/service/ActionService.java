@@ -7,10 +7,12 @@ import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.domain.ActionChain;
 import pl.pl.mgr.editnow.domain.Image;
 import pl.pl.mgr.editnow.domain.User;
+import pl.pl.mgr.editnow.dto.ActionDto;
 import pl.pl.mgr.editnow.dto.action.ActionStatus;
 import pl.pl.mgr.editnow.dto.ActionQueueItem;
 import pl.pl.mgr.editnow.dto.ActionRequest;
 import pl.pl.mgr.editnow.dto.action.ActionType;
+import pl.pl.mgr.editnow.mapper.ActionDtoMapper;
 import pl.pl.mgr.editnow.repository.ActionRepository;
 import pl.pl.mgr.editnow.service.queue.ActionSender;
 
@@ -22,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ActionService {
 
+  private final ActionDtoMapper actionDtoMapper;
   private final UserService userService;
   private final ImageService imageService;
 
@@ -38,7 +41,7 @@ public class ActionService {
   }
 
   @Transactional
-  public Action startAction(ActionRequest actionRequest) {
+  public ActionDto startAction(ActionRequest actionRequest) {
     User user = userService.getUserFromContext();
 
     Action action = createAction(actionRequest, user);
@@ -48,7 +51,7 @@ public class ActionService {
     ActionQueueItem actionQueueItem = createActionQueueItem(action, actionRequest.getImageBase64());
     actionSender.send(actionQueueItem);
 
-    return action;  //TODO handle action on frontend OR change to outputfilename
+    return actionDtoMapper.map(action);  //TODO handle action on frontend OR change to outputfilename
   }
 
   private ActionQueueItem createActionQueueItem(Action action, String imageBase64) {

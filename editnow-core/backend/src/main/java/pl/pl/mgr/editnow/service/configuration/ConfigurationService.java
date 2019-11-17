@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.pl.mgr.editnow.domain.configuration.ActionTool;
 import pl.pl.mgr.editnow.dto.ActionToolsInCategoryDto;
 import pl.pl.mgr.editnow.dto.configuration.ActionToolCategory;
-import pl.pl.mgr.editnow.mapper.ActionToolMapper;
+import pl.pl.mgr.editnow.mapper.ActionToolDtoMapper;
 import pl.pl.mgr.editnow.repository.ActionToolRepository;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
 public class ConfigurationService {
 
   private final ActionToolRepository actionToolRepository;
-  private final ActionToolMapper actionToolMapper;
+  private final ActionToolDtoMapper actionToolDtoMapper;
 
   public List<ActionToolsInCategoryDto> getActionsTools() {
     List<ActionToolsInCategoryDto> actionToolsInCategoryDtos = new ArrayList<>();
@@ -26,7 +26,7 @@ public class ConfigurationService {
 
       ActionToolsInCategoryDto actionToolsInCategoryDto = new ActionToolsInCategoryDto();
       actionToolsInCategoryDto.setCategoryName(actionToolCategory.getName());
-      actionToolsInCategoryDto.setActionTools(actionToolMapper.mapList(actionToolsFromCategory));
+      actionToolsInCategoryDto.setActionTools(actionToolDtoMapper.mapList(actionToolsFromCategory));
 
       actionToolsInCategoryDtos.add(actionToolsInCategoryDto);
     }

@@ -2,8 +2,8 @@ package pl.pl.mgr.editnow.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.domain.ActionChain;
+import pl.pl.mgr.editnow.dto.ActionDto;
 import pl.pl.mgr.editnow.dto.ActionRequest;
 import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.dto.ImageType;
@@ -20,7 +20,7 @@ public class ActionController {
   private final ActionCodeService actionCodeService;
 
   @PostMapping
-  public Action startAction(@RequestBody ActionRequest actionRequest) {
+  public ActionDto startAction(@RequestBody ActionRequest actionRequest) {
     return actionService.startAction(actionRequest);
   }
 
