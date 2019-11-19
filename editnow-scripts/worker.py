@@ -19,7 +19,8 @@ dbConnection = None
 # TODO change related function/action - python scripts to database
 def actions(name):
     acs = {
-       'GRAYSCALE': 'preprocessing/grayscale_opencv.py'
+        'GRAYSCALE': 'preprocessing/grayscale_opencv.py',
+        'MEDIAN_BLUR': 'preprocessing/median_blur_opencv.py'
     }
     return acs.get(name, None)
 

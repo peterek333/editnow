@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.dto.configuration.ActionToolCategory;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="action_tools")
@@ -21,5 +23,8 @@ public class ActionTool {
 
   @Enumerated(EnumType.STRING)
   private ActionToolCategory actionToolCategory;
+
+  @ElementCollection
+  private List<ParameterInfo> parameterInfos;
 
 }

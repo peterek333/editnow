@@ -5,8 +5,9 @@ import org.springframework.stereotype.Component;
 import pl.pl.mgr.editnow.domain.configuration.ActionTool;
 import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.dto.configuration.ActionToolCategory;
+import pl.pl.mgr.editnow.domain.configuration.ParameterInfo;
+import pl.pl.mgr.editnow.dto.configuration.ParameterType;
 import pl.pl.mgr.editnow.repository.ActionToolRepository;
-
 import java.util.*;
 
 @Component
@@ -16,6 +17,7 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
   private final ActionToolRepository actionToolRepository;
 
   private final Map<ActionToolCategory, List<ActionType>> actionTypesInCategory = createActionTypesInCategory();
+  private final Map<ActionType, List<ParameterInfo>> parameterInfosForActionType = createParameterInfosForActionType();
 
   private Map<ActionToolCategory, List<ActionType>> createActionTypesInCategory() {
     Map<ActionToolCategory, List<ActionType>> actionTypesInCategory = new HashMap<>();
@@ -30,6 +32,15 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
       Arrays.asList(ActionType.THRESHOLD));
 
     return actionTypesInCategory;
+  }
+
+  private Map<ActionType, List<ParameterInfo>> createParameterInfosForActionType() {
+    Map<ActionType, List<ParameterInfo>> parameterInfosForActionType = new HashMap<>();
+
+    parameterInfosForActionType.put(ActionType.MEDIAN_BLUR,
+      Collections.singletonList(new ParameterInfo("kSize", ParameterType.INT)));
+
+    return parameterInfosForActionType;
   }
 
   @Override
@@ -53,8 +64,16 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
     ActionTool actionTool = new ActionTool();
     actionTool.setActionType(actionType);
     actionTool.setActionToolCategory(actionToolCategory);
+    actionTool.setParameterInfos(findParameterInfo(actionType));
 
     return actionTool;
+  }
+
+  private List<ParameterInfo> findParameterInfo(ActionType actionType) {
+    List<ParameterInfo> parameterInfos = parameterInfosForActionType.get(actionType);
+    return parameterInfos != null
+      ? parameterInfos
+      : Collections.emptyList();
   }
 
 }

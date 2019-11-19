@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="actionChains")
+@Table(name="action_chains")
 @Getter
 @Setter
 public class ActionChain {

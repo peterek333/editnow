@@ -7,10 +7,10 @@ import cv2
 # argv[1] - images path like "./images/"
 # argv[2] - input image name (before processed)
 # argv[3} - output image name (after processed)
-path = './'
-imageName = 'test_rgb.jpg'
-processedImageName = 'test_rgb_out.jpg'
-ksize = 3
+path = argv[1]
+imageName = argv[2]
+processedImageName = argv[3]
+ksize = argv[4]
 
 print(path + imageName)
 

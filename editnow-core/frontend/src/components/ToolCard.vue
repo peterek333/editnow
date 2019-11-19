@@ -15,9 +15,13 @@
                 <button v-for="actionTool in actionTools"
                         :key="actionTool.name"
                         v-on:click="emitActionTool(actionTool)"
-                        :disabled="!canUseActionTools"
+                        :disabled="canUseActionTools"
                         class="btn btn-primary">
                     {{ actionTool.name }}
+                    <tool-card-parameters-modal v-if="actionTool.parameterInfoDtos && actionTool.parameterInfoDtos.length > 0"
+                                                :modal-id="actionTool.name"
+                                                :modal-title="actionTool.name + ' parameters input modal' "
+                                                :parameter-info-dtos="actionTool.parameterInfoDtos"/>
                 </button>
             </b-card-body>
         </b-collapse>
@@ -26,9 +30,11 @@
 
 <script>
   import constVars from '../mixins/const-variables';
+  import ToolCardParametersModal from "./ToolCardParametersModal";
 
   export default {
     name: "ToolCard",
+    components: {ToolCardParametersModal},
     data() {
       return {
         accordionId: this.accordion + '-' + this.accordionName,
@@ -51,7 +57,19 @@
     },
     methods: {
       emitActionTool(actionTool) {
-        this.$eventBus.$emit(constVars.EVENT_ACTION_TOOL_CLICK, actionTool);
+        let actionRequest = {
+          name: actionTool.name
+        };
+        console.log(actionTool.name, actionTool);
+        if (actionTool.parameterInfoDtos && actionTool.parameterInfoDtos.length > 0) {
+          this.getInputParameters(actionTool);
+        } else {
+          this.$eventBus.$emit(constVars.EVENT_ACTION_TOOL_CLICK, actionTool); //TODO przemapowany obiekt actionTool?
+        }
+      },
+      getInputParameters(actionTool) {
+        console.log('show', actionTool);
+        this.$bvModal.show(actionTool.name);
       }
     },
     created() {

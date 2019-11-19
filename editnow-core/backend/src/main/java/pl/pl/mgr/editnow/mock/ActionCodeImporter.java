@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import pl.pl.mgr.editnow.domain.ActionCode;
+import pl.pl.mgr.editnow.domain.configuration.ActionCode;
 import pl.pl.mgr.editnow.dto.PythonLibrary;
 import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.repository.ActionCodeRepository;

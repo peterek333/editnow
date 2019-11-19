@@ -1,4 +1,4 @@
-package pl.pl.mgr.editnow.domain;
+package pl.pl.mgr.editnow.domain.configuration;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="actionCodes")
+@Table(name="action_codes")
 @Getter
 @Setter
 public class ActionCode {

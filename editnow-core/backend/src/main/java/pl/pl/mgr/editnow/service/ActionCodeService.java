@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.openide.util.MapFormat;
 import org.springframework.stereotype.Service;
 import pl.pl.mgr.editnow.domain.Action;
-import pl.pl.mgr.editnow.domain.ActionCode;
+import pl.pl.mgr.editnow.domain.configuration.ActionCode;
 import pl.pl.mgr.editnow.domain.User;
 import pl.pl.mgr.editnow.dto.PythonLibrary;
 import pl.pl.mgr.editnow.dto.action.ActionType;
