@@ -48,7 +48,7 @@ public class TestData implements InitializationDatabaseData {
 
     actions.add(actionGrayscale);
     actions.add(actionMorphology);
-    actionChain.setActions(actions);
+//    actionChain.setActions(actions);
     actionChainRepository.save(actionChain);
   }
 

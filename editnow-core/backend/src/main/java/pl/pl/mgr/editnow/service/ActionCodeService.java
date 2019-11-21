@@ -26,7 +26,7 @@ public class ActionCodeService {
   public String generateCodeFromActionChain() {
     User user = userService.getUserFromContext();
 
-    Set<Action> actions = user.getActionChain().getActions();
+    List<Action> actions = user.getActionChain().getActions();
 
     StringBuilder generatedCode = new StringBuilder();
     boolean insertedLoadImage = false;

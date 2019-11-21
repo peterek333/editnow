@@ -10,7 +10,7 @@ import cv2
 path = argv[1]
 imageName = argv[2]
 processedImageName = argv[3]
-ksize = argv[4]
+ksize = int(argv[4])
 
 print(path + imageName)
 

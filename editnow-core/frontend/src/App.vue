@@ -15,7 +15,9 @@
       <tool-cards-accordion id="tool-cards-accordion"></tool-cards-accordion>
     </div>
     <div id="console-menu">
-
+      <console-menu
+              console-menu-title="Historia zmian"
+      ></console-menu>
     </div>
   </div>
 </template>
@@ -23,9 +25,10 @@
 <script>
 
 import ToolCardsAccordion from "./components/ToolCardsAccordion";
+import ConsoleMenu from "./components/ConsoleMenu";
 export default {
   name: 'app',
-  components: {ToolCardsAccordion},
+  components: {ConsoleMenu, ToolCardsAccordion},
   data () {
     return {
     }
@@ -65,7 +68,7 @@ export default {
   #tools-menu {
     position: fixed;
     top: 10%;
-    left: 2px;
+    left: -2px;
     height: 75%;
     width: 200px;
   }
@@ -78,10 +81,8 @@ export default {
   #console-menu {
     position: fixed;
     top: 10%;
-    right: 2px;
+    right: -2px;
     height: 75%;
     width: 300px;
-
-    border: 1px solid black;
   }
 </style>

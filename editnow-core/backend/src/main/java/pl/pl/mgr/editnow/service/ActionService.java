@@ -20,10 +20,7 @@ import pl.pl.mgr.editnow.repository.ActionRepository;
 import pl.pl.mgr.editnow.service.queue.ActionSender;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +45,7 @@ public class ActionService {
   }
 
   @Transactional
-  public ActionDto startAction(ActionRequest actionRequest) {
+  public ActionDto startAction(ActionRequest actionRequest) throws IOException {
     User user = userService.getUserFromContext();
 
     Action action = createAction(actionRequest, user);
@@ -65,26 +62,38 @@ public class ActionService {
     ActionChain actionChain = user.getActionChain();
     if (actionChain == null) {
       actionChain = new ActionChain();
-      actionChain.setActions(Collections.singleton(action));
+      actionChain.setActions(Collections.singletonList(action));
       user.setActionChain(actionChain);
     } else {
       actionChain.getActions().add(action);
     }
   }
 
-  private ActionQueueItem createActionQueueItem(Action action, String imageBase64) {
+  private ActionQueueItem createActionQueueItem(Action action, String imageBase64) throws IOException {
+    String inputImageName = action.getInputImage().getName();
+
     return ActionQueueItem.builder()
       .actionId(action.getId())
       .actionName(action.getActionType().name())
-      .inputImageName(action.getInputImage().getName())
+      .inputImageName(inputImageName)
       .outputImageName(action.getOutputImage().getName())
-      .imageBase64(imageBase64)
+      .imageBase64(imageBase64 != null
+        ? imageBase64
+        : imageService.getBase64(inputImageName))
       .parameterDtos(parameterDtoMapper.mapList(action.getParameters()))
       .build();
   }
 
   private Action createAction(ActionRequest actionRequest, User user) {
-    Image inputImage = imageService.saveInputImage(actionRequest);
+    Image inputImage = null;
+    if (isNextActionFromChain(user.getActionChain())) {
+      inputImage = user.getActionChain().getActions()
+        .get(user.getActionChain().getActions().size() - 1)
+        .getOutputImage();
+    } else {
+      inputImage = imageService.saveInputImage(actionRequest);
+    }
+
     Image outputImage = imageService.createOutputImageMetadata(
       actionRequest.getActionType().name(), inputImage.getName(), actionRequest.getImageType());
 
@@ -100,15 +109,19 @@ public class ActionService {
     return action;
   }
 
+  private boolean isNextActionFromChain(ActionChain actionChain) {
+    return actionChain.getActions() != null && actionChain.getActions().size() > 0;
+  }
+
   @Transactional
-  public ActionChain newActionChain() {
+  public boolean newActionChain() {
     ActionChain actionChain = new ActionChain();
-    actionChain.setActions(new LinkedHashSet<>());
+    actionChain.setActions(new ArrayList<>());
 
     User user = userService.getUserFromContext();
     user.setActionChain(actionChain);
 
-    return actionChain;
+    return true;
   }
 
   public Action getAction(long id) {
@@ -125,7 +138,7 @@ public class ActionService {
 
     String outputImageName = action.getOutputImage().getName();
 
-    return imageService.getBase64Image(outputImageName);
+    return imageService.getBase64ImageDetails(outputImageName);
   }
 
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,6 +21,6 @@ public class ActionChain {
   @OneToMany(fetch = FetchType.EAGER) //, orphanRemoval = true)
   @JoinColumn(name = "actionChain_id")
   @OrderBy  //("id ASC")
-  private Set<Action> actions;
+  private List<Action> actions;
 
 }

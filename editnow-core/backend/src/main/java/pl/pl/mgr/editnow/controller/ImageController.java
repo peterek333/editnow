@@ -2,7 +2,6 @@ package pl.pl.mgr.editnow.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import pl.pl.mgr.editnow.dto.ActionRequest;
 import pl.pl.mgr.editnow.dto.ImageDetails;
 import pl.pl.mgr.editnow.service.ImageService;
@@ -23,7 +22,7 @@ public class ImageController {
 
   @GetMapping("/{imageName}")
   public ImageDetails getImage(@PathVariable String imageName) throws IOException {
-    return imageService.getBase64Image(imageName);
+    return imageService.getBase64ImageDetails(imageName);
   }
 
 //  @PostMapping("/transformation/grayscale")

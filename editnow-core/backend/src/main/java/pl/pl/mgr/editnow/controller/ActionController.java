@@ -2,7 +2,6 @@ package pl.pl.mgr.editnow.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.pl.mgr.editnow.domain.ActionChain;
 import pl.pl.mgr.editnow.dto.ActionDto;
 import pl.pl.mgr.editnow.dto.ActionRequest;
 import pl.pl.mgr.editnow.dto.ImageDetails;
@@ -23,7 +22,7 @@ public class ActionController {
   private final ActionCodeService actionCodeService;
 
   @PostMapping
-  public ActionDto startAction(@RequestBody ActionRequest actionRequest) {
+  public ActionDto startAction(@RequestBody ActionRequest actionRequest) throws IOException {
     return actionService.startAction(actionRequest);
   }
 
@@ -48,7 +47,7 @@ public class ActionController {
   }
 
   @PostMapping("/chain/new")
-  public ActionChain newActionChain() {
+  public boolean newActionChain() {
     return actionService.newActionChain();
   }
 

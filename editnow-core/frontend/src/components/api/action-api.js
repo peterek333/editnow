@@ -13,4 +13,7 @@ export default {
   getOutputImageByActionId(actionId) {
     return AXIOS.get(`/${actionId}/output`);
   },
+  newActionChain() {
+    return AXIOS.post('/chain/new');
+  },
 }

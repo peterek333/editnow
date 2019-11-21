@@ -3,7 +3,6 @@ package pl.pl.mgr.editnow.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import pl.pl.mgr.editnow.domain.Action;
 import pl.pl.mgr.editnow.domain.Image;
 import pl.pl.mgr.editnow.dto.action.ActionStatus;
@@ -105,13 +104,17 @@ public class ImageService {
     }
 
 
-    public ImageDetails getBase64Image(String imageName) throws IOException {
+    public ImageDetails getBase64ImageDetails(String imageName) throws IOException {
         //TODO create mapper
         Image image = imageRepository.findByName(imageName);
 
         return new ImageDetails(
           fileStorageService.loadImageInBase64(imageName),
           image.getType());
+    }
+
+    public String getBase64(String imageName) throws IOException {
+        return fileStorageService.loadImageInBase64(imageName);
     }
 
 }

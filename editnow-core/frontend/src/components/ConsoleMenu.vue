@@ -1,0 +1,75 @@
+<template>
+    <div class="consoleMenu">
+        <h4 class="m-1">
+            {{ consoleMenuTitle }}
+        </h4>
+        <div class="m-2 historyDiv">
+            <div v-for="history in histories"
+                 :key="history.time"
+                 class="m-1"
+                 >
+                <div>
+                    {{ '[' + history.time + ']' }}
+                </div>
+                <div>
+                    <span v-if="history.type === 'INPUT'">
+                        Wywołano akcje <span class="font-weight-bold"> {{ history.name }}</span>
+                        <span v-if="history.parameters && history.parameters.length > 0">
+                            {{ ' z parametrami ' }}
+                            <span v-for="(parameter, index) in history.parameters"
+                                  :key="parameter.name">
+                                <span class="font-weight-bold">
+                                    {{ parameter.name + '=' + parameter.value }}
+                                </span>
+                                <span v-if="index !== (history.parameters.length - 1)">
+                                    {{ ', ' }}
+                                </span>
+                            </span>
+                        </span>
+                    </span>
+                    <span v-else-if="history.type === 'OUTPUT'">
+                        Otrzymano wynik dla <span class="font-weight-bold"> {{ history.name }}</span>
+                    </span>
+                    <span v-else-if="history.type === 'ERROR'">
+                        Zwrócono błąd: <span class="font-weight-bold errorText"> {{ history.errorMessage }}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+  export default {
+    name: "ConsoleMenu",
+    props: [ 'consoleMenuTitle' ],
+    data() {
+      return {
+        histories: [
+          { time: '18:20:32', name: 'GRAYSCALE', type: 'INPUT' },
+          { time: '18:20:36', name: 'GRAYSCALE', type: 'OUTPUT' },
+          { time: '18:20:50', name: 'MEDIAN_BLUR', type: 'INPUT',
+            parameters: [{ name: 'kSize', value: '2' }] },
+          { time: '18:20:53', name: 'MEDIAN_BLUR', type: 'ERROR', errorMessage: 'Niepoprawna wartosc parametrow'}
+        ]
+      }
+    }
+  }
+</script>
+
+<style scoped>
+    .consoleMenu {
+        background-color: #e9ecef;
+        height: 100%;
+        border-radius: 0.3rem;
+        -webkit-box-shadow: 1px 1px 4px 2px rgba(0,0,0,0.30);
+        -moz-box-shadow: 1px 1px 4px 2px rgba(0,0,0,0.30);
+        box-shadow: 1px 1px 4px 2px rgba(0,0,0,0.30);
+    }
+    .historyDiv {
+        text-align: left;
+    }
+    .errorText {
+        color: #b60000;
+    }
+</style>
