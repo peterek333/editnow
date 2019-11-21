@@ -14,14 +14,15 @@
                 <b-card-text>{{ accordionId }}</b-card-text>
                 <button v-for="actionTool in actionTools"
                         :key="actionTool.name"
-                        v-on:click="emitActionTool(actionTool)"
-                        :disabled="canUseActionTools"
+                        v-on:click="handleClickedActionTool(actionTool)"
+                        :disabled="!canUseActionTools"
                         class="btn btn-primary">
                     {{ actionTool.name }}
                     <tool-card-parameters-modal v-if="actionTool.parameterInfoDtos && actionTool.parameterInfoDtos.length > 0"
                                                 :modal-id="actionTool.name"
                                                 :modal-title="actionTool.name + ' parameters input modal' "
-                                                :parameter-info-dtos="actionTool.parameterInfoDtos"/>
+                                                :parameter-info-dtos="actionTool.parameterInfoDtos"
+                                                :callbackFunctionOk="emitActionTool"/>
                 </button>
             </b-card-body>
         </b-collapse>
@@ -56,20 +57,31 @@
       }
     },
     methods: {
-      emitActionTool(actionTool) {
-        let actionRequest = {
-          name: actionTool.name
-        };
-        console.log(actionTool.name, actionTool);
+      handleClickedActionTool(actionTool) {
         if (actionTool.parameterInfoDtos && actionTool.parameterInfoDtos.length > 0) {
           this.getInputParameters(actionTool);
         } else {
-          this.$eventBus.$emit(constVars.EVENT_ACTION_TOOL_CLICK, actionTool); //TODO przemapowany obiekt actionTool?
+          this.emitActionTool(actionTool.name, null);
         }
       },
       getInputParameters(actionTool) {
-        console.log('show', actionTool);
         this.$bvModal.show(actionTool.name);
+      },
+      emitActionTool(actionToolName, parameterDtos) {
+        let emittedActionTool = {
+          name: actionToolName
+        };
+        if (parameterDtos !== null && parameterDtos.length > 0) {
+          emittedActionTool.parameters = [];
+          parameterDtos.forEach(parameterDto => {
+            emittedActionTool.parameters.push({
+              name: parameterDto.name,
+              parameterType: parameterDto.parameterType,
+              value: parameterDto.value
+            });
+          });
+        }
+        this.$eventBus.$emit(constVars.EVENT_ACTION_TOOL_CLICK, emittedActionTool);
       }
     },
     created() {

@@ -12,7 +12,7 @@ public class ActionDtoMapper implements Mapper<Action, ActionDto> {
     ActionDto actionDto = new ActionDto();
     actionDto.setId(action.getId());
     actionDto.setActionType(action.getActionType());
-    actionDto.setParameters(action.getParameters());
+//    actionDto.setParameters(action.getParameters());
 
     return actionDto;
   }

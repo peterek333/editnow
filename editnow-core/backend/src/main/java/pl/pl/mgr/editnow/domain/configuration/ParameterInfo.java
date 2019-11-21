@@ -13,7 +13,7 @@ import javax.persistence.Enumerated;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor  //TODO usunac??
 @Embeddable
 public class ParameterInfo {
 

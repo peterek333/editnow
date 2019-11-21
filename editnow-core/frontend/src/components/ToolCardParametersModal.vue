@@ -1,10 +1,29 @@
 <template>
-    <b-modal v-bind:id="modalId" :title="modalTitle">
+    <b-modal v-bind:id="modalId"
+             :title="modalTitle"
+             hide-footer>
         <div v-for="parameterInfo in parameterInfoDtos"
              :key="parameterInfo.name">
-            {{ parameterInfo.name + ': '}}
-            <b-form-input v-if="parameterInfo.parameterType === 'INT'"
-                          v-model="parameterInfo.value"></b-form-input>
+            <b-input-group :prepend="parameterInfo.name">
+                <b-form-input v-if="parameterInfo.parameterType === 'INT'"
+                              type="number"
+                              v-model="parameterInfo.value"></b-form-input>
+            </b-input-group>
+
+<!--            TODO obsluga innych typow + przesylanie tej wartosci po nacisnieciu start -->
+        </div>
+        <div class="footer">
+            <button type="button"
+                    class="btn btn-secondary footer-button"
+                    @click="closeModal">
+                Cancel
+            </button>
+            <button type="button"
+                    class="btn btn-primary footer-button"
+                    @click="handleSendParameters"
+            >
+                Send parameters
+            </button>
         </div>
     </b-modal>
 </template>
@@ -13,19 +32,37 @@
   export default {
     name: "ToolCardParametersModal",
     props: [
-      'modalId', 'modalTitle', 'parameterInfoDtos'
+      'modalId', 'modalTitle', 'parameterInfoDtos', 'callbackFunctionOk'
     ],
-    data() {
-      return {
-        value: null
-      }
-    },
     created() {
       console.log('created', this.modalId);
+    },
+    methods: {
+      handleSendParameters() {
+        this.callbackFunctionOk(this.modalId, this.parameterInfoDtos);
+        this.closeModal();
+      },
+      closeModal() {
+        this.$bvModal.hide(this.modalId);  //FIXME zapamietuje wpisane parametry ze wzgledu na fakt, ze modal jest chowany wiec jego obiekt jest nadal w pamieci
+      }
     }
   }
 </script>
 
 <style scoped>
+    .footer {
+        display: flex;
+        -ms-flex-align: center;
+        -webkit-box-align: center;
+        align-items: center;
+        -ms-flex-pack: end;
+        -webkit-box-pack: end;
+        justify-content: flex-end;
+        border-top: 1px solid #dee2e6;
+        margin: 15px 5px 15px 5px;
+    }
+    .footer-button {
+        margin: 1rem .5rem 0 0;
+    }
 
 </style>

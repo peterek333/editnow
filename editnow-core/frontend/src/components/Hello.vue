@@ -26,9 +26,6 @@
                   <img v-bind:width="imageWidth" v-bind:height="imageHeight"
                        v-else v-bind:src="imageNoPhoto"/>
               </div>
-              <div>
-                  <button @click="transformToGrayscale()">Convert to grayscale</button>
-              </div>
           </div>
       </div>
   </div>
@@ -70,13 +67,7 @@ export default {
       completedAction.onmessage = function(event) {
         actionApi.getOutputImageByActionId(objectContext.actionId)
           .then(response => {
-            // objectContext.outputImage = {
-            //   fullImageBase64: 'data:inputImage/' + response.data.type +  ';base64,' + response.data.base64,
-            //   base64: response.data.base64,
-            //   type: response.data.type
-            // }
             objectContext.outputImage = imageUtil.getImageStructureFromResponse(response);
-            // completedAction.close();
             mixinsApi.closeCompletedActionEmitter();
             completedAction.close();
           })
@@ -100,20 +91,16 @@ export default {
       reader.onloadend = function() {
         objectContext.inputImage = imageUtil.getImageStructureFromFullImageBase64(reader.result);
 
-        //TODO poczyscic plik
-        //TODO usuwac output zdjecie po wybraniu
-        console.log(objectContext.inputImage);
-
         objectContext.emitIsImageEvent(true);
       };
       reader.readAsDataURL(file);
     },
-    handleClickedActionTool(actionTool) {
+    handleClickedActionTool(emittedActionTool) {
       const actionRequest = {
-        actionType: actionTool.name,
+        actionType: emittedActionTool.name,
         imageBase64: this.inputImage.base64,
         imageType: this.inputImage.type,
-        // parameters:
+        parameters: emittedActionTool.parameters
       };
 
       actionApi.sendActionRequest(actionRequest)
@@ -132,10 +119,8 @@ export default {
     }
   },
   created() {
-    //this.waitForCompletedAction(); //TODO check performance
-    this.$eventBus.$on(constVars.EVENT_ACTION_TOOL_CLICK, (actionTool) => {
-      console.log('from event bus', actionTool.name, actionTool);
-      this.handleClickedActionTool(actionTool);
+    this.$eventBus.$on(constVars.EVENT_ACTION_TOOL_CLICK, (emittedActionTool) => {
+      this.handleClickedActionTool(emittedActionTool);
     });
     this.emitIsImageEvent(false);
   }

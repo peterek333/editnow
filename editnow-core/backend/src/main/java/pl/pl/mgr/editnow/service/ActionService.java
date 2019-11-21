@@ -14,6 +14,8 @@ import pl.pl.mgr.editnow.dto.ActionQueueItem;
 import pl.pl.mgr.editnow.dto.ActionRequest;
 import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.mapper.ActionDtoMapper;
+import pl.pl.mgr.editnow.mapper.ParameterDtoMapper;
+import pl.pl.mgr.editnow.mapper.ParameterMapperImpl;
 import pl.pl.mgr.editnow.repository.ActionRepository;
 import pl.pl.mgr.editnow.service.queue.ActionSender;
 
@@ -28,6 +30,8 @@ import java.util.List;
 public class ActionService {
 
   private final ActionDtoMapper actionDtoMapper;
+  private final ParameterMapperImpl parameterMapperImpl;
+  private final ParameterDtoMapper parameterDtoMapper;
   private final UserService userService;
   private final ImageService imageService;
 
@@ -75,6 +79,7 @@ public class ActionService {
       .inputImageName(action.getInputImage().getName())
       .outputImageName(action.getOutputImage().getName())
       .imageBase64(imageBase64)
+      .parameterDtos(parameterDtoMapper.mapList(action.getParameters()))
       .build();
   }
 
@@ -85,7 +90,7 @@ public class ActionService {
 
     Action action = new Action();
     action.setActionType(actionRequest.getActionType());
-    action.setParameters(actionRequest.getParameters());
+    action.setParameters(parameterMapperImpl.mapList(actionRequest.getParameters()));
     action.setInputImage(inputImage);
     action.setOutputImage(outputImage);
     action.setStatus(ActionStatus.PENDING);

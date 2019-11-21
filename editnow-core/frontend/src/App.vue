@@ -14,6 +14,9 @@
     <div id="tools-menu">
       <tool-cards-accordion id="tool-cards-accordion"></tool-cards-accordion>
     </div>
+    <div id="console-menu">
+
+    </div>
   </div>
 </template>
 
@@ -70,5 +73,15 @@ export default {
   #tool-cards-accordion {
     overflow-y: auto;
     max-height: 100%;
+  }
+
+  #console-menu {
+    position: fixed;
+    top: 10%;
+    right: 2px;
+    height: 75%;
+    width: 300px;
+
+    border: 1px solid black;
   }
 </style>

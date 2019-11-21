@@ -60,6 +60,8 @@ def createDirectories():
 
 def runScriptAndWaitForFinish(actionScriptName, args):
     scriptPath = SCRIPTS_FOLDER_PATH + actionScriptName
+    print(scriptPath)
+    print(args)
     scriptProcess = subprocess.Popen([scriptPath] + args, shell=False)
     scriptProcessWorking = scriptProcess.poll() is None
     while scriptProcessWorking:
@@ -71,16 +73,27 @@ def handleAction(ch, method, properties, body):
     actionName = bodyDict['actionName']
     print('Handle action')
     actionScriptName = actions(actionName)
-    print(actionScriptName)
+    print(bodyDict)
     if actionScriptName is not None:
         # TODO handle pass multiple arguments
         inputImageName = bodyDict['inputImageName']
         saveImageFromBase64(inputImageName, bodyDict['imageBase64'])
         outputImageName = 'output_' + inputImageName
-        runScriptAndWaitForFinish(actionScriptName, [IMAGES_FOLDER_PATH, inputImageName, outputImageName])
+        parameters = prepareParameters(bodyDict['parameterDtos'])
+        print(parameters)
+        args = [IMAGES_FOLDER_PATH, inputImageName, outputImageName]
+        args.extend(parameters)
+        runScriptAndWaitForFinish(actionScriptName, args)
         print('Finished script')
         # changeActionStatusToComplete(bodyDict['id'])
         sendCompletedAction(bodyDict['actionId'], outputImageName)
+
+
+def prepareParameters(parameterDtos):
+    parameters = []
+    for parameterDto in parameterDtos:
+        parameters.append(parameterDto['value'])
+    return parameters
 
 
 def saveImageFromBase64(inputImageName, imageBase64):

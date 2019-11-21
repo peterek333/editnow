@@ -5,9 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.dto.action.ActionStatus;
-
 import javax.persistence.*;
-import java.util.Map;
+import java.util.List;
 
 @Entity
 @Table(name="actions")
@@ -32,7 +31,7 @@ public class Action {
   private ActionStatus status;
 
   @ElementCollection
-  private Map<String, Integer> parameters;
+  private List<Parameter> parameters;
 
   @ManyToOne
   @JoinColumn

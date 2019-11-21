@@ -71,7 +71,7 @@ public class TestData implements InitializationDatabaseData {
       parametersMorphology.put("kernelRows", 4);
       parametersMorphology.put("kernelCols", 5);
       parametersMorphology.put("morphType", 2);
-      action.setParameters(parametersMorphology);
+//      action.setParameters(parametersMorphology);
     }
 
     imageRepository.save(inputImage);

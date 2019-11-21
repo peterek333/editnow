@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.openide.util.MapFormat;
 import org.springframework.stereotype.Service;
 import pl.pl.mgr.editnow.domain.Action;
+import pl.pl.mgr.editnow.domain.Parameter;
 import pl.pl.mgr.editnow.domain.configuration.ActionCode;
 import pl.pl.mgr.editnow.domain.User;
 import pl.pl.mgr.editnow.dto.PythonLibrary;
 import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.repository.ActionCodeRepository;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,14 +65,22 @@ public class ActionCodeService {
     generatedCode.append(loadImageCode);
   }
 
-  private String prepareCode(ActionCode actionCode, Map<String, Integer> parameters) {
+  private String prepareCode(ActionCode actionCode, List<Parameter> parameters) {
     String code = actionCode.getCode();
+    Map<String, String> valuePerKeyParameters = prepareParameters(parameters);
 
     if (parameters.size() > 0) {
-      code = MapFormat.format(code, parameters);
+      code = MapFormat.format(code, valuePerKeyParameters);
     }
 
     return code;
+  }
+
+  private Map<String, String> prepareParameters(List<Parameter> parameters) {
+    return parameters.stream()
+      .collect(Collectors.toMap(
+        Parameter::getName,
+        Parameter::getValue));
   }
 
   private void insertImports(StringBuilder generatedCode, Set<PythonLibrary> importedLibraries) {
