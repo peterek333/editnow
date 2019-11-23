@@ -11,12 +11,11 @@
                     v-bind:visible="visible"
                     v-bind:accordion="accordion" role="tabpanel">
             <b-card-body>
-                <b-card-text>{{ accordionId }}</b-card-text>
                 <button v-for="actionTool in actionTools"
                         :key="actionTool.name"
                         v-on:click="handleClickedActionTool(actionTool)"
                         :disabled="!canUseActionTools"
-                        class="btn btn-primary">
+                        class="btn btn-primary m-1">
                     {{ actionTool.name }}
                     <tool-card-parameters-modal v-if="actionTool.parameterInfoDtos && actionTool.parameterInfoDtos.length > 0"
                                                 :modal-id="actionTool.name"

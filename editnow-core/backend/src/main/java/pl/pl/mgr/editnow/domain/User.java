@@ -14,6 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(unique = true)
     private String uuid;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) //, orphanRemoval = true)

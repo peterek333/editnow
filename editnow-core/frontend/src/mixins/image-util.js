@@ -22,6 +22,13 @@ export default {
       base64: response.data.base64,
       type: response.data.type
     }
+  },
+  getEmptyImageObject() {
+    return {
+      fullImageBase64: null,
+      base64: null,
+      type: null
+    }
   }
 
 }

@@ -25,12 +25,7 @@
         const toolCardsAccordion = 'Narzędzia';
         return {
           toolCardsTitle: toolCardsAccordion,
-          toolCards: [
-            // { accordion: toolCardsAccordion, accordionName: 'Przetwarzanie wstepne', visible: false },
-            // { accordion: toolCardsAccordion, accordionName: 'Segmentacja obrazu', visible: false },
-            // { accordion: toolCardsAccordion, accordionName: 'Detekcja krawedzi', visible: false },
-            // { accordion: toolCardsAccordion, accordionName: 'Operacje morfologiczne', visible: false },
-          ]
+          toolCards: []
         }
       },
       methods: {

@@ -30,7 +30,7 @@ public class UUIDCookieFilter implements Filter {
 
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
-      LOGGER.log(Level.INFO, "Request on path: " + request.getRequestURI());
+      LOGGER.log(Level.INFO, "Request path: " + request.getRequestURI());
       setUUIDFromCookiesInContext(cookies);
     }
 
@@ -53,7 +53,6 @@ public class UUIDCookieFilter implements Filter {
       });
   }
 
-  @Transactional
   void addToDatabaseIfNotExist(String uuid) {
     User userFromDb = userRepository.findByUuid(uuid);
 
@@ -61,7 +60,12 @@ public class UUIDCookieFilter implements Filter {
       User user = new User();
       user.setUuid(uuid);
 
-      userRepository.save(user);
+      try {
+        userRepository.save(user);
+        LOGGER.log(Level.INFO, "Added to database user: " + uuid);
+      } catch (Exception exc) {
+        LOGGER.log(Level.INFO, "User: " + uuid + " exist in database");
+      }
     }
   }
 

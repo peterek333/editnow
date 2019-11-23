@@ -45,6 +45,7 @@ public class SseEmitterService {
     if (emitter != null) {
       try {
         emitter.send(new Gson().toJson("Works"));
+        emitter.complete();
       } catch (IOException e) {
         emitters.remove(userUUID); //dead emitter
         e.printStackTrace();

@@ -27,35 +27,34 @@
                        v-else v-bind:src="imageNoPhoto"/>
                   <b-spinner class="center-spinner" v-if="waitingForAction"></b-spinner>
               </div>
+              <generate-code-component></generate-code-component>
           </div>
+      </div>
+      <div class="row">
+          hello
       </div>
   </div>
 </template>
 
 <script>
-    import imageApi from './api/image-api.js';
     import actionApi from './api/action-api.js';
     import imageUtil from '../mixins/image-util';
     import constVars from '../mixins/const-variables';
     import mixinsApi from "./api/mixins-api";
+    import GenerateCodeComponent from "./GenerateCodeComponent";
 
 export default {
   name: 'hello',
+  components: {
+    GenerateCodeComponent
+  },
   data () {
     return {
       imageWidth: '400px',
       imageHeight: '400px',
-      inputImage: {
-        fullImageBase64: null,  //TODO change to typescript class ??
-        base64: null,
-        type: null
-      },
+      inputImage: imageUtil.getEmptyImageObject(),
       outputImageName: null,
-      outputImage: {
-        fullImageBase64: null,
-        base64: null,
-        type: null
-      },
+      outputImage: imageUtil.getEmptyImageObject(),
       actionId: null,
       waitingForAction: false,
       actionChainIsEmpty: true,
@@ -75,6 +74,7 @@ export default {
             if (objectContext.actionChainIsEmpty) {
               objectContext.outputImage = imageUtil.getImageStructureFromResponse(response);
               objectContext.actionChainIsEmpty = false;
+              objectContext.$eventBus.$emit(constVars.EVENT_DISABLE_GENERATE_CODE_BTN, false);
             } else {
               objectContext.inputImage = objectContext.outputImage;
               objectContext.outputImage = imageUtil.getImageStructureFromResponse(response);
@@ -98,14 +98,18 @@ export default {
       completedActionEventSource.close();
       this.waitingForAction = false;
     },
-    encodeImageFileAsURL(event) {
+    encodeImageFileAsURL({target}) {
       const objectContext = this;
 
-      const file = event.target.files[0];
+      const file = target.files[0];
+      target.value = '';        //FIXME pozwala ponownie wylapac onchange na elemencie
       const reader = new FileReader();
+
+      console.log(target.files, target);
 
       reader.onloadend = function() {
         objectContext.inputImage = imageUtil.getImageStructureFromFullImageBase64(reader.result);
+        objectContext.clearOutputImageAndCreateActionChain();
 
         objectContext.emitIsImageEvent(true);
       };
@@ -132,6 +136,12 @@ export default {
           console.log(error)
         });
 
+    },
+    clearOutputImageAndCreateActionChain() {
+      // if (this.actionChainIsEmpty == false)
+      this.createNewActionChain();
+      this.outputImage = imageUtil.getEmptyImageObject();
+      this.$eventBus.$emit(constVars.EVENT_DISABLE_GENERATE_CODE_BTN, true);
     },
     emitIsImageEvent(isImage) {
       this.$eventBus.$emit(constVars.EVENT_IS_IMAGE, isImage);

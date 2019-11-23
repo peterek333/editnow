@@ -16,4 +16,7 @@ export default {
   newActionChain() {
     return AXIOS.post('/chain/new');
   },
+  generateCode() {
+    return AXIOS.get('/code/generate');
+  }
 }
