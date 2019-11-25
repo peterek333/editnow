@@ -141,4 +141,8 @@ public class ActionService {
     return imageService.getBase64ImageDetails(outputImageName);
   }
 
+  public boolean actionExists(long actionId) {
+    return actionRepository.findById(actionId) != null;
+  }
+
 }

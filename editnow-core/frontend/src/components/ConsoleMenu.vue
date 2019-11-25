@@ -33,6 +33,9 @@
                     <span v-else-if="history.type === 'ERROR'">
                         Zwrócono błąd: <span class="font-weight-bold errorText"> {{ history.errorMessage }}</span>
                     </span>
+                    <span v-else-if="history.type === 'MESSAGE'">
+                        {{ history.message }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -40,17 +43,27 @@
 </template>
 
 <script>
+  import constVars from '../mixins/const-variables';
+
   export default {
     name: "ConsoleMenu",
     props: [ 'consoleMenuTitle' ],
+    created() {
+      this.$eventBus.$on(constVars.EVENT_HISTORY_CHANGE, historyData => {
+        this.histories.push(historyData);
+      });
+      this.$eventBus.$on(constVars.EVENT_HISTORY_RESET, resetHistoryData => {
+        this.histories = [ resetHistoryData ];
+      })
+    },
     data() {
       return {
         histories: [
-          { time: '18:20:32', name: 'GRAYSCALE', type: 'INPUT' },
-          { time: '18:20:36', name: 'GRAYSCALE', type: 'OUTPUT' },
-          { time: '18:20:50', name: 'MEDIAN_BLUR', type: 'INPUT',
-            parameters: [{ name: 'kSize', value: '2' }] },
-          { time: '18:20:53', name: 'MEDIAN_BLUR', type: 'ERROR', errorMessage: 'Niepoprawna wartosc parametrow'}
+          // { time: '18:20:32', name: 'GRAYSCALE', type: 'INPUT' },
+          // { time: '18:20:36', name: 'GRAYSCALE', type: 'OUTPUT' },
+          // { time: '18:20:50', name: 'MEDIAN_BLUR', type: 'INPUT',
+          //   parameters: [{ name: 'kSize', value: '2' }] },
+          // { time: '18:20:53', name: 'MEDIAN_BLUR', type: 'ERROR', errorMessage: 'Niepoprawna wartosc parametrow'}
         ]
       }
     }

@@ -37,9 +37,11 @@ public class CompletedActionReceiver {
   private void sendCompletedAction(String subscribedWordJson) {
     CompletedAction completedAction = new Gson().fromJson(subscribedWordJson, CompletedAction.class);
 
-    Action action = actionService.completeAction(completedAction.getActionId());
-    fileStorageService.saveImageFromBase64(completedAction.getImageBase64(), action.getOutputImage().getName());
-    sseEmitterService.sendCompletedAction(completedAction);
+    if (actionService.actionExists(completedAction.getActionId())) {
+      Action action = actionService.completeAction(completedAction.getActionId());
+      fileStorageService.saveImageFromBase64(completedAction.getImageBase64(), action.getOutputImage().getName());
+      sseEmitterService.sendCompletedAction(completedAction);
+    }
   }
 
 }
