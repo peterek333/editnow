@@ -1,8 +1,10 @@
 package pl.pl.mgr.editnow.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pl.mgr.editnow.dto.ImageType;
+import pl.pl.mgr.editnow.service.util.ImageNameFactoryImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,13 +16,16 @@ import java.util.Base64;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class FileStorageService {
 
   private static final String IMAGES_DIRECTORY = "./images/";
 
+  private final ImageNameFactoryImpl imageNameFactory;
+
   @Transactional
   public String saveRenamedToUUID(String imageBase64, ImageType imageType) {
-    String fileName = getUUID() + '.' + imageType.getExtension();
+    String fileName = imageNameFactory.generateName(imageType);
     //TODO util for manage file path local/cloud + handle imageBase64 type
     return saveImageFromBase64(imageBase64, fileName);
   }
@@ -36,10 +41,6 @@ public class FileStorageService {
       e.printStackTrace();
     }
     return null;
-  }
-
-  private String getUUID() {
-    return UUID.randomUUID().toString();
   }
 
 

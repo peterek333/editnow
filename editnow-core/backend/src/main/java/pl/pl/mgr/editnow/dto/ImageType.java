@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ImageType {
   PNG("png", new String[]{"png"}),
-  JPG("jpg", new String[]{"jpg", "jpeg"}),
+  JPG("jpg", new String[]{"jpg", "jpeg"}),  //fixme jaka roznica miedzy jpg, a jpeg?
   ;
 
   private final String extension;

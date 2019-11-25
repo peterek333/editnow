@@ -17,9 +17,10 @@ rabbitMQConnection = None
 dbConnection = None
 
 # TODO change related function/action - python scripts to database
-def actions(name):
+def getFilePathByActionName(name):
     acs = {
         'GRAYSCALE': 'preprocessing/grayscale_opencv.py',
+        'ROTATE': 'preprocessing/rotate_opencv.py',
         'MEDIAN_BLUR': 'preprocessing/median_blur_opencv.py'
     }
     return acs.get(name, None)
@@ -60,8 +61,8 @@ def createDirectories():
 
 def runScriptAndWaitForFinish(actionScriptName, args):
     scriptPath = SCRIPTS_FOLDER_PATH + actionScriptName
-    print(scriptPath)
-    print(args)
+
+    logInfo("Script args: " + str(args))
     scriptProcess = subprocess.Popen([scriptPath] + args, shell=False)
     scriptProcessWorking = scriptProcess.poll() is None
     while scriptProcessWorking:
@@ -71,21 +72,23 @@ def runScriptAndWaitForFinish(actionScriptName, args):
 def handleAction(ch, method, properties, body):
     bodyDict = json.loads(body.decode('utf-8'))
     actionName = bodyDict['actionName']
-    print('Handle action')
-    actionScriptName = actions(actionName)
-    print(bodyDict)
+    logInfo('Handle action: ' + actionName)
+
+    actionScriptName = getFilePathByActionName(actionName)
+
     if actionScriptName is not None:
-        # TODO handle pass multiple arguments
         inputImageName = bodyDict['inputImageName']
         saveImageFromBase64(inputImageName, bodyDict['imageBase64'])
-        outputImageName = 'output_' + inputImageName
+        outputImageName = bodyDict['outputImageName']
         parameters = prepareParameters(bodyDict['parameterDtos'])
-        print(parameters)
+
         args = [IMAGES_FOLDER_PATH, inputImageName, outputImageName]
         args.extend(parameters)
+
         runScriptAndWaitForFinish(actionScriptName, args)
-        print('Finished script')
-        # changeActionStatusToComplete(bodyDict['id'])
+
+        logInfo('Finished script for action: ' + actionName + '\n')
+
         sendCompletedAction(bodyDict['actionId'], outputImageName)
 
 
@@ -100,6 +103,10 @@ def saveImageFromBase64(inputImageName, imageBase64):
     imagePath = IMAGES_FOLDER_PATH + inputImageName
     with open(imagePath, 'wb') as image:
         image.write(base64.b64decode(imageBase64))
+
+
+def logInfo(text):
+    print(text)
 
 # def changeActionStatusToComplete(actionId):
 #     global dbConnection

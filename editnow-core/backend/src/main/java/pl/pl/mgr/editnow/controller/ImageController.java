@@ -15,24 +15,9 @@ public class ImageController {
 
   private final ImageService imageService;
 
-  @GetMapping("/test/skis")
-  public ImageDetails getTestSkisImage() throws IOException {
-    return imageService.getTestSkiImage();
-  }
-
   @GetMapping("/{imageName}")
   public ImageDetails getImage(@PathVariable String imageName) throws IOException {
     return imageService.getBase64ImageDetails(imageName);
-  }
-
-//  @PostMapping("/transformation/grayscale")
-//  public String transformToGrayscale(@RequestParam MultipartFile imageBase64) {
-//    return imageService.transformToGrayscale(imageBase64);
-//  }
-
-  @PostMapping("/transformation/grayscale")
-  public String transformToGrayscale(@RequestBody ActionRequest actionRequest) {
-    return imageService.transformToGrayscale(actionRequest);
   }
 
 }

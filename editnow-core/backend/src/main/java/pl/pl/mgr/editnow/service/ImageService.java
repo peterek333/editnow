@@ -24,57 +24,13 @@ import java.io.IOException;
 public class ImageService {
 
     private final FileStorageService fileStorageService;
-    private final ActionSender actionSender;
-    private final UserService userService;
 
     private final ImageFactory imageFactory;
 
     private final ImageRepository imageRepository;
-    private final ActionRepository actionRepository;
 
-    public ImageDetails getTestSkiImage() throws IOException {
-        showFiles("./");
-        String imageBase64 = fileStorageService.loadImageInBase64("skis.jpeg");
-//        byte[] imageBytes = Files.readAllBytes(Paths.get("files/skis.jpeg"));
-//        byte[] imageBytes = Files.readAllBytes(Paths.get("../files/skis_resized.jpg"));
-
-
-        return new ImageDetails(
-          imageBase64,
-          ImageType.JPG);
-    }
-
-    public String transformToGrayscale(ActionRequest actionRequest) {
-        String actionName = "grayscale";
-        Image inputImage = saveInputImage(actionRequest);
-        Image outputImage = createOutputImageMetadata(actionName, inputImage.getName(), actionRequest.getImageType());
-
-        Action action = new Action();
-        action.setInputImage(inputImage);
-        action.setOutputImage(outputImage); //TODO set when output image was created
-        action.setStatus(ActionStatus.PENDING);
-//        action.setUser(userService.getUserFromContext());
-        actionRepository.save(action);
-
-      ActionQueueItem actionQueueItem = ActionQueueItem.builder() //TODO mapper
-        .actionId(action.getId())
-        .actionName(actionName)
-        .inputImageName(inputImage.getName())
-        .imageBase64(actionRequest.getImageBase64())
-        .build();
-
-        actionSender.send(actionQueueItem);
-
-        return action.getOutputImage().getName();
-    }
-
-    public Image createOutputImageMetadata(String actionName, String inputImageName, ImageType imageType) {
-        Image image = new Image();
-        image.setName(actionName + "_" + inputImageName);
-        image.setType(imageType);
-        imageRepository.save(image);
-
-        return image;
+    public Image createOutputImageMetadata(ImageType imageType) {
+        return imageFactory.createOutputImageMetadata(imageType);
     }
 
     public Image saveInputImage(ActionRequest actionRequest) {

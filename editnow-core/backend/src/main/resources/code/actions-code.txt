@@ -1,6 +1,15 @@
 # GRAYSCALE
 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
+# ROTATE
+rows, cols = image.shape[:2]
+center = (cols / 2, rows / 2)
+M = cv2.getRotationMatrix2D(center, {angle}, 1)
+rotated = cv2.warpAffine(image, M, (cols, rows))
+
+# MEDIAN_BLUR
+image = cv2.medianBlur(image, {kSize})
+
 # MORPHOLOGY_TRANSFORM
 kernel = np.ones(({kernelRows}, {kernelCols}), np.uint8)
 image = cv2.morphologyEx(image, {morphType}, kernel)

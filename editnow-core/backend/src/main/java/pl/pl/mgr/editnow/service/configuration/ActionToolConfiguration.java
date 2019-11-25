@@ -23,7 +23,7 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
     Map<ActionToolCategory, List<ActionType>> actionTypesInCategory = new HashMap<>();
 
     actionTypesInCategory.put(ActionToolCategory.PREPROCESSING,
-      Arrays.asList(ActionType.GRAYSCALE, ActionType.RGB_CHANNEL, ActionType.MEDIAN_BLUR));
+      Arrays.asList(ActionType.GRAYSCALE, ActionType.RGB_CHANNEL, ActionType.ROTATE, ActionType.MEDIAN_BLUR));
 
     actionTypesInCategory.put(ActionToolCategory.MORPHOLOGY_OPERATIONS,
       Arrays.asList(ActionType.MORPHOLOGY_TRANSFORM));
@@ -36,6 +36,9 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
 
   private Map<ActionType, List<ParameterInfo>> createParameterInfosForActionType() {
     Map<ActionType, List<ParameterInfo>> parameterInfosForActionType = new HashMap<>();
+
+    parameterInfosForActionType.put(ActionType.ROTATE,
+      Collections.singletonList(new ParameterInfo("angle", ParameterType.INT)));
 
     parameterInfosForActionType.put(ActionType.MEDIAN_BLUR,
       Collections.singletonList(new ParameterInfo("kSize", ParameterType.INT)));

@@ -1,14 +1,10 @@
 #!/usr/bin/env python
 
 import cv2
-import numpy as np
 
 path = './'
 imageName = 'test_rgb.jpg'
 processedImageName = 'test_rgb_out.jpg'
-# disableRed = True
-# disableGreen = False
-# disableBlue = True
 disableRed = True
 disableGreen = True
 disableBlue = False

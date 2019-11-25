@@ -85,17 +85,8 @@ public class ActionService {
   }
 
   private Action createAction(ActionRequest actionRequest, User user) {
-    Image inputImage = null;
-    if (isNextActionFromChain(user.getActionChain())) {
-      inputImage = user.getActionChain().getActions()
-        .get(user.getActionChain().getActions().size() - 1)
-        .getOutputImage();
-    } else {
-      inputImage = imageService.saveInputImage(actionRequest);
-    }
-
-    Image outputImage = imageService.createOutputImageMetadata(
-      actionRequest.getActionType().name(), inputImage.getName(), actionRequest.getImageType());
+    Image inputImage = getInputImage(actionRequest, user);
+    Image outputImage = imageService.createOutputImageMetadata(inputImage.getType());
 
     Action action = new Action();
     action.setActionType(actionRequest.getActionType());
@@ -107,6 +98,22 @@ public class ActionService {
     actionRepository.save(action);
 
     return action;
+  }
+
+  private Image getInputImage(ActionRequest actionRequest, User user) {
+    ActionChain actionChain = user.getActionChain();
+
+    return isNextActionFromChain(actionChain)
+      ? getOutputImageFromLastActionInChain(actionChain)
+      : imageService.saveInputImage(actionRequest);
+  }
+
+  private Image getOutputImageFromLastActionInChain(ActionChain actionChain) {
+    int lastActionFromChainIndex = actionChain.getActions().size() - 1;
+
+    return actionChain.getActions()
+      .get(lastActionFromChainIndex)
+      .getOutputImage();
   }
 
   private boolean isNextActionFromChain(ActionChain actionChain) {

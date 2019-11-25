@@ -10,15 +10,13 @@ import cv2
 path = argv[1]
 imageName = argv[2]
 processedImageName = argv[3]
-ksize = int(argv[4])
-
-print(path + imageName)
+kSize = int(argv[4])
 
 # load image
 image = cv2.imread(path + imageName)
 
 # ### work
-image = cv2.medianBlur(image, ksize)
+image = cv2.medianBlur(image, kSize)
 # ### end work
 
 # save image
