@@ -14,7 +14,7 @@
                 <button v-for="actionTool in actionTools"
                         :key="actionTool.name"
                         v-on:click="handleClickedActionTool(actionTool)"
-                        :disabled="!canUseActionTools"
+                        :disabled="actionTool.disabled || !canUseActionTools"
                         class="btn btn-primary m-1">
                     {{ actionTool.name }}
                     <tool-card-parameters-modal v-if="actionTool.parameterInfoDtos && actionTool.parameterInfoDtos.length > 0"

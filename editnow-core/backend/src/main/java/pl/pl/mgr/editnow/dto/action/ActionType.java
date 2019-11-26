@@ -5,6 +5,8 @@ public enum ActionType {
     RGB_CHANNEL,
     ROTATE,
     MEDIAN_BLUR,
+    GAUSSIAN_BLUR,
+    BILATERAL_FILTER,
     MORPHOLOGY_TRANSFORM,
     THRESHOLD,
 

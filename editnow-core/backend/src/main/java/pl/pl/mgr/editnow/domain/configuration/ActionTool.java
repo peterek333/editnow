@@ -27,4 +27,6 @@ public class ActionTool {
   @ElementCollection
   private List<ParameterInfo> parameterInfos;
 
+  private boolean disabled;
+
 }

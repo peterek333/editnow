@@ -10,6 +10,12 @@ rotated = cv2.warpAffine(image, M, (cols, rows))
 # MEDIAN_BLUR
 image = cv2.medianBlur(image, {kSize})
 
+# GAUSSIAN_BLUR
+image = cv2.GaussianBlur(image, ({kernelWidth}, {kernelHeight}), {sigmaX})
+
+# BILATERAL_FILTER
+image = cv2.bilateralFilter(image, {d}, {sigmaColor}, {sigmaSpace})
+
 # MORPHOLOGY_TRANSFORM
 kernel = np.ones(({kernelRows}, {kernelCols}), np.uint8)
 image = cv2.morphologyEx(image, {morphType}, kernel)

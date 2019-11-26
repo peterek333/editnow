@@ -7,15 +7,15 @@ import cv2
 path = argv[1]
 imageName = argv[2]
 processedImageName = argv[3]
-kernelWidth = int(argv[4])
-kernelHeight = int(argv[5])
-sigmaX = int(argv[6])
+d = int(argv[4])
+sigmaColor = int(argv[5])
+sigmaSpace = int(argv[6])
 
 # load image
 image = cv2.imread(path + imageName)
 
 # ### work
-image = cv2.GaussianBlur(image, (kernelWidth, kernelHeight), sigmaX)
+image = cv2.bilateralFilter(image, d, sigmaColor, sigmaSpace)
 # ### end work
 
 # save image

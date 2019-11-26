@@ -11,5 +11,6 @@ public class ActionToolDto {
 
   private String name;
   private List<ParameterInfoDto> parameterInfoDtos;
+  private boolean disabled;
 
 }

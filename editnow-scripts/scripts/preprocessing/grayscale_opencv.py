@@ -11,8 +11,6 @@ path = argv[1]
 imageName = argv[2]
 processedImageName = argv[3]
 
-print(path + imageName)
-
 # load image
 image = cv2.imread(path + imageName)
 
