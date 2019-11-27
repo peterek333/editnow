@@ -16,31 +16,22 @@ def morph_types(morphType):
        6: cv2.MORPH_ERODE
     }.get(morphType, None)
 
-# parse input
-# argv[1] - images path like "./images/"
-# argv[2] - input image name (before processed)
-# argv[3} - output image name (after processed)
-path = './'
-imageName = 'test_j.png'
-processedImageName = 'test_j_out.png'
-kernelRows = 3
-kernelCols = 5
-morphTypeIndex = 5
+
+path = argv[1]
+imageName = argv[2]
+processedImageName = argv[3]
+kernelRows = int(argv[4])
+kernelCols = int(argv[5])
+morphTypeIndex = int(argv[6])
 
 # calculate before
 morphType = morph_types(morphTypeIndex)
-
-print(morphType)
-print(path + imageName)
-for i in range(0, 7):
-    print(morph_types(i))
 
 # load image
 image = cv2.imread(path + imageName)
 
 # ### work
 kernel = np.ones((kernelRows, kernelCols), np.uint8)
-print(kernel)
 image = cv2.morphologyEx(image, morphType, kernel)  # iterations = X
 # ### end work
 

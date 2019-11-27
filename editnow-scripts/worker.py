@@ -5,6 +5,7 @@ import pika
 from pika.exceptions import AMQPConnectionError
 # import MySQLdb
 import base64
+import logging
 
 ACTION_QUEUE_NAME = 'action'
 COMPLETED_ACTION_QUEUE_NAME = 'completedAction'
@@ -24,6 +25,8 @@ def getFilePathByActionName(name):
         'MEDIAN_BLUR': 'preprocessing/median_blur_opencv.py',
         'GAUSSIAN_BLUR': 'preprocessing/gaussian_blur_opencv.py',
         'BILATERAL_FILTER': 'preprocessing/bilateral_filter_opencv.py',
+        'THRESHOLD': 'segmentation/threshold_opencv.py',
+        'MORPHOLOGY_TRANSFORM': 'morphology/morphology_transform_opencv.py'
     }
     return acs.get(name, None)
 
@@ -69,6 +72,14 @@ def runScriptAndWaitForFinish(actionScriptName, args):
     scriptProcessWorking = scriptProcess.poll() is None
     while scriptProcessWorking:
         scriptProcessWorking = scriptProcess.poll() is None
+
+
+def handleActionWithException(ch, method, properties, body):
+    try:
+        handleAction(ch, method, properties, body)
+    except Exception as e:
+        logging.error('Error at %s', 'division', exc_info=e)
+        #TODO send failed message
 
 
 def handleAction(ch, method, properties, body):
@@ -134,7 +145,7 @@ if __name__ == '__main__':
 
     actionChannel = rabbitMQConnection.channel()
     actionChannel.queue_declare(queue=ACTION_QUEUE_NAME, durable=True)
-    actionChannel.basic_consume(queue=ACTION_QUEUE_NAME, auto_ack=True, on_message_callback=handleAction)
+    actionChannel.basic_consume(queue=ACTION_QUEUE_NAME, auto_ack=True, on_message_callback=handleActionWithException)
 
     print('\n\nWaiting for messages on action queue..')
     actionChannel.start_consuming()
