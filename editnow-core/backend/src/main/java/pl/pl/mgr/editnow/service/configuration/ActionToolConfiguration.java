@@ -3,6 +3,7 @@ package pl.pl.mgr.editnow.service.configuration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.pl.mgr.editnow.domain.configuration.ActionTool;
+import pl.pl.mgr.editnow.domain.configuration.ParameterInfoOption;
 import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.dto.configuration.ActionToolCategory;
 import pl.pl.mgr.editnow.domain.configuration.ParameterInfo;
@@ -29,11 +30,11 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
       Arrays.asList(ActionType.GRAYSCALE, ActionType.RGB_CHANNEL, ActionType.ROTATE, ActionType.MEDIAN_BLUR,
         ActionType.GAUSSIAN_BLUR, ActionType.BILATERAL_FILTER));
 
-    actionTypesInCategory.put(ActionToolCategory.MORPHOLOGY_OPERATIONS,
-      Arrays.asList(ActionType.MORPHOLOGY_TRANSFORM));
-
     actionTypesInCategory.put(ActionToolCategory.SEGMENTATION,
       Arrays.asList(ActionType.THRESHOLD));
+
+    actionTypesInCategory.put(ActionToolCategory.MORPHOLOGY_OPERATIONS,
+      Arrays.asList(ActionType.MORPHOLOGY_TRANSFORM));
 
     return actionTypesInCategory;
   }
@@ -57,7 +58,39 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
       new ParameterInfo("sigmaColor", ParameterType.INT),
       new ParameterInfo("sigmaSpace", ParameterType.INT)));
 
+    parameterInfosForActionType.put(ActionType.THRESHOLD, Arrays.asList(
+      new ParameterInfo("threshold", ParameterType.INT),
+      new ParameterInfo("maxval", ParameterType.INT),
+      new ParameterInfo("thresholdType", ParameterType.OPTION, createThresholdOptions())));
+
+    parameterInfosForActionType.put(ActionType.MORPHOLOGY_TRANSFORM, Arrays.asList(
+      new ParameterInfo("kernelRows", ParameterType.INT),
+      new ParameterInfo("kernelCols", ParameterType.INT),
+      new ParameterInfo("morphType", ParameterType.OPTION, createMorphologyTransformOptions())));
+
     return parameterInfosForActionType;
+  }
+
+  private List<ParameterInfoOption> createThresholdOptions() {
+    return Arrays.asList(
+      new ParameterInfoOption("THRESH_BINARY", "0"),
+      new ParameterInfoOption("THRESH_BINARY_INV", "1"),
+      new ParameterInfoOption("THRESH_TRUNC", "2"),
+      new ParameterInfoOption("THRESH_TOZERO", "3"),
+      new ParameterInfoOption("THRESH_TOZERO_INV", "4")
+    );
+  }
+
+  private List<ParameterInfoOption> createMorphologyTransformOptions() {
+    return Arrays.asList(
+      new ParameterInfoOption("MORPH_ERODE", "0"),
+      new ParameterInfoOption("MORPH_DILATE", "1"),
+      new ParameterInfoOption("MORPH_OPEN", "2"),
+      new ParameterInfoOption("MORPH_CLOSE", "3"),
+      new ParameterInfoOption("MORPH_GRADIENT", "4"),
+      new ParameterInfoOption("MORPH_TOPHAT", "5"),
+      new ParameterInfoOption("MORPH_BLACKHAT", "6")
+    );
   }
 
   @Override

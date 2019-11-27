@@ -8,6 +8,9 @@
                 <b-form-input v-if="parameterInfo.parameterType === 'INT'"
                               type="number"
                               v-model="parameterInfo.value"></b-form-input>
+                <b-form-select v-if="parameterInfo.parameterType === 'OPTION'"
+                               v-model="parameterInfo.value"
+                               :options="parameterInfo.parameterInfoOptionDtos"></b-form-select>
             </b-input-group>
 
 <!--            TODO obsluga innych typow + przesylanie tej wartosci po nacisnieciu start -->

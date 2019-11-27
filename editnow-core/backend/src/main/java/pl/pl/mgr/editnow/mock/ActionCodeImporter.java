@@ -35,6 +35,7 @@ public class ActionCodeImporter {
       {ActionType.MEDIAN_BLUR, Collections.singletonList(PythonLibrary.OPEN_CV)},
       {ActionType.GAUSSIAN_BLUR, Collections.singletonList(PythonLibrary.OPEN_CV)},
       {ActionType.BILATERAL_FILTER, Collections.singletonList(PythonLibrary.OPEN_CV)},
+      {ActionType.THRESHOLD, Collections.singletonList(PythonLibrary.OPEN_CV)},
       {ActionType.MORPHOLOGY_TRANSFORM, Arrays.asList(PythonLibrary.OPEN_CV, PythonLibrary.NUMPY)},
     };
 

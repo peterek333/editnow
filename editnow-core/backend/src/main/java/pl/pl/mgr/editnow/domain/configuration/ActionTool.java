@@ -24,7 +24,8 @@ public class ActionTool {
   @Enumerated(EnumType.STRING)
   private ActionToolCategory actionToolCategory;
 
-  @ElementCollection
+  @OneToMany(cascade = CascadeType.ALL)   //TODO zweryfikowac, poprawic
+  @JoinColumn(name = "actionTool_id")
   private List<ParameterInfo> parameterInfos;
 
   private boolean disabled;
