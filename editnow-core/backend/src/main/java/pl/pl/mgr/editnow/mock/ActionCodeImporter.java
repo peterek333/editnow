@@ -10,6 +10,7 @@ import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.repository.ActionCodeRepository;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,22 +75,38 @@ public class ActionCodeImporter {
   private void fillActionCodes(Stream<String> lines) {
     AtomicReference<ActionType> actualActionType = new AtomicReference<>();
     StringBuilder code = new StringBuilder();
+    AtomicBoolean actionCodeExists = new AtomicBoolean(false);
 
     lines.forEach(codeLine -> {
-      if (codeLine.startsWith(ACTION_CODE_START_SIGN)) {  //found start of next action code
-        if (actualActionType.get() != null) { //save previous code
-          saveActionCode(actualActionType.get(), code.toString());
+      if (actionCodeExists.get()) { //action code exists in database - do nothing
+        return;
+      } else if (codeLine.startsWith(ACTION_CODE_START_SIGN)) {  //found start of next action code
+        ActionType foundActionType = ActionType.valueOf(  //point to actual action type
+          codeLine.substring(1).replaceAll("\\s+|", ""));
+
+        if (actionCodeForActionTypeExists(foundActionType)) {
+          actionCodeExists.set(true);
+        } else {
+          actionCodeExists.set(false);
+          if (actualActionType.get() != null) { //save previous code
+            saveActionCode(actualActionType.get(), code.toString());
+          }
+
+          actualActionType.set(foundActionType);  //format "# GRAYSCALE" to "GRAYSCALE"
+
+          code.setLength(0);  //maybe slower than new StringBuilder but avoids AtomicReference for this field
         }
-
-        actualActionType.set(ActionType.valueOf(  //point to actual action type
-          codeLine.substring(1).replaceAll("\\s+|", "")));  //format "# GRAYSCALE" to "GRAYSCALE"
-
-        code.setLength(0);  //maybe slower than new StringBuilder but avoids AtomicReference for this field
       } else if ( !codeLine.isEmpty()) {  //if is not empty line - add line to code
         code.append(codeLine).append("\n");
       }
     });
-    saveActionCode(actualActionType.get(), code.toString()); //save last action
+    if ( !actionCodeExists.get()) {
+      saveActionCode(actualActionType.get(), code.toString()); //save last action
+    }
+  }
+
+  private boolean actionCodeForActionTypeExists(ActionType foundActionType) {
+    return actionCodeRepository.existsActionCodeByActionType(foundActionType);
   }
 
   private void saveActionCode(ActionType actionType, String code) {

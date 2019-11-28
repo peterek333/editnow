@@ -2,13 +2,11 @@
   <div id="app">
     <b-container id="app-container">
       <b-row class="justify-content-center" style="height: 10%;">
-        header
       </b-row>
       <b-row class="align-items-center justify-content-center" style="height: 75%;">
         <router-view></router-view>
       </b-row>
       <b-row class="justify-content-center" style="height: 15%;">
-        footer
       </b-row>
     </b-container>
     <div id="tools-menu">

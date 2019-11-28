@@ -101,9 +101,11 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
       ActionToolCategory actionToolCategory = actionTypesInCategoryEntry.getKey();
 
       for(ActionType actionType: actionTypesInCategoryEntry.getValue()) {
-        ActionTool actionTool = createActionTool(actionToolCategory, actionType);
+        if ( !actionToolRepository.existsActionToolByActionTypeAndActionToolCategory(actionType, actionToolCategory)) {
+          ActionTool actionTool = createActionTool(actionToolCategory, actionType);
 
-        actionTools.add(actionTool);
+          actionTools.add(actionTool);
+        }
       }
     }
 
