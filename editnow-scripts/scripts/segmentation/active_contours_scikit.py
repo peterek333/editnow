@@ -1,21 +1,17 @@
 #!/usr/bin/env python
 
 from sys import argv
-import cv2
 import numpy as np
-from skimage.color import rgb2gray
-from skimage import data
 from skimage.filters import gaussian
 from skimage.segmentation import active_contour
 from skimage import io
-from skimage import img_as_ubyte
 
 
 # parse input
 # argv[1] - images path like "./images/"
 # argv[2] - input image name (before processed)
 # argv[3} - output image name (after processed)
-path = '../'
+path = '../../test/'
 imageName = 'test_astronaut_2.jpg'
 processedImageName = 'test_astronaut_output.png'
 

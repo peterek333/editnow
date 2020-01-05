@@ -8,3 +8,11 @@ spring.jpa.hibernate.ddl-auto=create
 cofnąć zmiane po wgraniu, bo można przekroczyc limit zapytań <3600
 2. Z poziomu projektu editnow-core<br/>
 cf push
+
+
+Budowanie z profilem<br/>
+clean install -Plocal -DprofileIdEnabled=true
+
+
+Wlaczanie z profilem<br/>
+java -r -Dspring.profiles.active=local backend-0.0.1-SNAPSHOT.jar

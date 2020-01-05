@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <b-container id="app-container">
-      <b-row class="justify-content-center" style="height: 10%;">
+      <b-row class="justify-content-center container-header" style="height: 10%;">
       </b-row>
       <b-row class="align-items-center justify-content-center" style="height: 75%;">
         <router-view></router-view>
       </b-row>
-      <b-row class="justify-content-center" style="height: 15%;">
+      <b-row class="justify-content-center align-items-end"  style="height: 15%;">
+        <span class="m-3 font-italic">{{ appBuildInfo }}</span>
       </b-row>
     </b-container>
     <div id="tools-menu">
@@ -24,12 +25,26 @@
 
 import ToolCardsAccordion from "./components/ToolCardsAccordion";
 import ConsoleMenu from "./components/ConsoleMenu";
+import appInfoApi from './components/api/app-info-api.js';
+
 export default {
   name: 'app',
   components: {ConsoleMenu, ToolCardsAccordion},
   data () {
     return {
+      appBuildInfo: "local"
     }
+  },
+  methods: {
+  },
+  created() {
+    appInfoApi.getAppBuildInfo()
+            .then(response => {
+              this.appBuildInfo = response.data;
+            })
+            .catch(error => {
+              console.log(error)
+            });
   },
   beforeCreate() {
     console.log("Hello!");
@@ -45,15 +60,6 @@ export default {
 <style lang="scss">
   html, body, #app, #app-container, #app-row {
     height: 100%;
-  }
-  #app-header {
-    height: 15%;
-  }
-  #app-body {
-    height: 70%;
-  }
-  #app-footer {
-    height: 15%;
   }
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
