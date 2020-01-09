@@ -1,6 +1,6 @@
 <template>
     <div class="consoleMenu">
-        <h4 class="m-1">
+        <h4 class="p-2 console-menu-title">
             {{ consoleMenuTitle }}
         </h4>
         <div class="m-2 historyDiv">
@@ -84,5 +84,8 @@
     }
     .errorText {
         color: #b60000;
+    }
+    .console-menu-title {
+        font-weight: bold;
     }
 </style>

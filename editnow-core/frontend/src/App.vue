@@ -2,6 +2,7 @@
   <div id="app">
     <b-container id="app-container">
       <b-row class="justify-content-center container-header" style="height: 10%;">
+        <logo-component></logo-component>
       </b-row>
       <b-row class="align-items-center justify-content-center" style="height: 75%;">
         <router-view></router-view>
@@ -15,7 +16,7 @@
     </div>
     <div id="console-menu">
       <console-menu
-              console-menu-title="Historia zmian"
+              console-menu-title="Changes history"
       ></console-menu>
     </div>
   </div>
@@ -23,13 +24,14 @@
 
 <script>
 
-import ToolCardsAccordion from "./components/ToolCardsAccordion";
-import ConsoleMenu from "./components/ConsoleMenu";
+import ToolCardsAccordion from "./view/ToolCardsMenuView";
+import ConsoleMenu from "./view/HistoryMenuView";
 import appInfoApi from './components/api/app-info-api.js';
+import LogoComponent from "./components/LogoComponent";
 
 export default {
   name: 'app',
-  components: {ConsoleMenu, ToolCardsAccordion},
+  components: {LogoComponent, ConsoleMenu, ToolCardsAccordion},
   data () {
     return {
       appBuildInfo: "local"

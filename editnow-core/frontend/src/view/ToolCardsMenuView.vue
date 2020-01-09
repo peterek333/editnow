@@ -1,6 +1,6 @@
 <template>
     <div role="tablist" class="toolCards">
-        <h4 class="m-1">
+        <h4 class="m-1 font-weight-bold">
             {{ toolCardsTitle }}
         </h4>
         <tool-card
@@ -15,14 +15,14 @@
 </template>
 
 <script>
-    import ToolCard from "./ToolCard";
-    import configurationApi from './api/configuration-api';
+    import ToolCard from "../components/ToolCard";
+    import configurationApi from '../components/api/configuration-api';
 
     export default {
       name: "ToolCardsAccordion",
       components: {ToolCard},
       data () {
-        const toolCardsAccordion = 'Narzędzia';
+        const toolCardsAccordion = 'Tools';
         return {
           toolCardsTitle: toolCardsAccordion,
           toolCards: []

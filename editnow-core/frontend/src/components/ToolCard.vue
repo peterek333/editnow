@@ -3,6 +3,7 @@
         <b-card-header header-tag="header" class="p-1" role="tab">
             <b-button block href="#"
                       variant="info"
+                      class="font-weight-bold"
                       v-b-toggle="accordionId">
                 {{ accordionName }}
             </b-button>
@@ -15,8 +16,9 @@
                         :key="actionTool.name"
                         v-on:click="handleClickedActionTool(actionTool)"
                         :disabled="actionTool.disabled || !canUseActionTools"
-                        class="btn btn-primary m-1">
-                    {{ actionTool.name }}
+                        style="width: 100%;"
+                        class="btn btn-light m-1 font-weight-bold action-tool-btn">
+                    {{ actionTool.readableName }}
                     <tool-card-parameters-modal v-if="actionTool.parameterInfoDtos && actionTool.parameterInfoDtos.length > 0"
                                                 :modal-id="actionTool.name"
                                                 :modal-title="actionTool.name + ' parameters input modal' "
@@ -93,5 +95,7 @@
 </script>
 
 <style scoped>
-
+  .action-tool-btn {
+      border: 1px outset;
+  }
 </style>

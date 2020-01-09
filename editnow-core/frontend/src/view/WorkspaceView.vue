@@ -1,55 +1,65 @@
 <template>
-  <div class="hello">
-      <div class="row">
-          <div class="col-6">
-              <div class="m-2">
-                  <img v-bind:width="imageWidth" v-bind:height="imageHeight"
-                       v-if="inputImage.fullImageBase64" v-bind:src="inputImage.fullImageBase64"/>
-                  <img v-bind:width="imageWidth" v-bind:height="imageHeight"
-                       v-else v-bind:src="imageNoPhoto"/>
-              </div>
-              <div>
-                  <input id="file-upload"
-                         type="file"
-                         style="display: none;"
-                         @change="encodeImageFileAsURL"/>
-                  <input type="button"
-                         class="btn btn-primary"
-                         value="Wybierz zdjecie..."
-                         onclick="document.getElementById('file-upload').click();" />
-              </div>
+  <div class="row">
+      <div class="col-6">
+          <div class="p-1">
+              <h3 class="font-weight-bold">
+                  Input image
+              </h3>
           </div>
-          <div class="col-6">
-              <div class="m-2">
-                  <img v-bind:width="imageWidth" v-bind:height="imageHeight"
-                       v-if="outputImage.fullImageBase64" v-bind:src="outputImage.fullImageBase64"/>
-                  <img v-bind:width="imageWidth" v-bind:height="imageHeight"
-                       v-else v-bind:src="imageNoPhoto"/>
-                  <b-spinner class="center-spinner" v-if="waitingForAction"></b-spinner>
-              </div>
-              <generate-code-component></generate-code-component>
+          <div class="m-2"
+               v-bind:class="{ 'dashed-border': !inputImage.fullImageBase64 }">
+              <img v-bind:width="imageWidth" v-bind:height="imageHeight"
+                   v-if="inputImage.fullImageBase64" v-bind:src="inputImage.fullImageBase64"/>
+              <img v-bind:width="imageWidth" v-bind:height="imageHeight"
+                   v-else v-bind:src="imageNoPhoto"/>
           </div>
+          <div>
+              <input id="file-upload"
+                     type="file"
+                     style="display: none;"
+                     @change="encodeImageFileAsURL"/>
+              <input type="button"
+                     class="btn btn-primary font-weight-bold"
+                     value="Choose photo..."
+                     onclick="document.getElementById('file-upload').click();" />
+          </div>
+      </div>
+      <div class="col-6">
+          <div class="p-1">
+              <h3 class="font-weight-bold">
+                  Processed image
+              </h3>
+          </div>
+          <div class="m-2"
+               v-bind:class="{ 'dashed-border': !outputImage.fullImageBase64 }">
+              <img v-bind:width="imageWidth" v-bind:height="imageHeight"
+                   v-if="outputImage.fullImageBase64" v-bind:src="outputImage.fullImageBase64"/>
+              <img v-bind:width="imageWidth" v-bind:height="imageHeight"
+                   v-else v-bind:src="imageNoPhoto"/>
+              <b-spinner class="center-spinner" v-if="waitingForAction"></b-spinner>
+          </div>
+          <generate-code-component></generate-code-component>
       </div>
   </div>
 </template>
 
 <script>
-    import actionApi from './api/action-api.js';
+    import actionApi from '../components/api/action-api.js';
     import imageUtil from '../mixins/image-util';
     import constVars from '../mixins/const-variables';
-    import mixinsApi from "./api/mixins-api";
-    import GenerateCodeComponent from "./GenerateCodeComponent";
+    import mixinsApi from "../components/api/mixins-api";
+    import GenerateCodeComponent from "../components/GenerateCodeComponent";
     import historyService from '../mixins/history-service';
 
 export default {
-  name: 'hello',
+  name: 'WorkspaceView',
   components: {
     GenerateCodeComponent
   },
   data () {
     return {
-      imageWidth: '400px',
-      imageHeight: '400px',
+      imageWidth: '450px',
+      imageHeight: '450px',
       inputImage: imageUtil.getEmptyImageObject(),
       outputImageName: null,
       outputImage: imageUtil.getEmptyImageObject(),
@@ -168,5 +178,8 @@ export default {
         position: absolute;
         top: 50%;
         left: 50%;
+    }
+    .dashed-border {
+        border: 4px dashed;
     }
 </style>

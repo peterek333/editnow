@@ -14,6 +14,7 @@ public class ActionToolDtoMapper implements Mapper<ActionTool, ActionToolDto> {
   public ActionToolDto map(ActionTool actionTool) {
     ActionToolDto actionToolDto = new ActionToolDto();
     actionToolDto.setName(actionTool.getActionType().name());
+    actionToolDto.setReadableName(actionTool.getActionType().getReadableName());
     actionToolDto.setParameterInfoDtos(
       parameterInfoDtoMapper.mapList(actionTool.getParameterInfos()));
     actionToolDto.setDisabled(actionTool.isDisabled());

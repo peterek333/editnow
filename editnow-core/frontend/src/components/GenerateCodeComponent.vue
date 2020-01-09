@@ -1,8 +1,8 @@
 <template>
     <div>
         <input type="button"
-               class="btn btn-primary"
-               value="Generuj kod"
+               class="btn btn-primary font-weight-bold"
+               value="Generate code"
                :disabled="disableGenerateCodeBtn"
                @click="generateCode()" />
         <b-modal :id="modalId"

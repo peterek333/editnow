@@ -10,6 +10,7 @@ import java.util.List;
 public class ActionToolDto {
 
   private String name;
+  private String readableName;
   private List<ParameterInfoDto> parameterInfoDtos;
   private boolean disabled;
 
