@@ -133,7 +133,7 @@ export default {
         actionRequest.imageType = this.inputImage.type;
       }
 
-      historyService.emitActionRequestHistory(this, actionRequest);
+      historyService.emitActionRequestHistory(this, emittedActionTool.readableName, actionRequest.parameters);
       actionApi.sendActionRequest(actionRequest)
         .then(response => {
           console.log('actionRequest', actionRequest, response.data);

@@ -13,9 +13,10 @@
                 </div>
                 <div>
                     <span v-if="history.type === 'INPUT'">
-                        Wywołano akcje <span class="font-weight-bold"> {{ history.name }}</span>
+                        <span class="font-weight-bold"> {{ history.readableName + ' '}}</span>
+                        action called
                         <span v-if="history.parameters && history.parameters.length > 0">
-                            {{ ' z parametrami ' }}
+                            {{ ' with parameters ' }}
                             <span v-for="(parameter, index) in history.parameters"
                                   :key="parameter.name">
                                 <span class="font-weight-bold">
@@ -28,10 +29,10 @@
                         </span>
                     </span>
                     <span v-else-if="history.type === 'OUTPUT'">
-                        Otrzymano wynik dla <span class="font-weight-bold"> {{ history.name }}</span>
+                        Processed image for <span class="font-weight-bold"> {{ history.readableName }}</span> was received
                     </span>
                     <span v-else-if="history.type === 'ERROR'">
-                        Zwrócono błąd: <span class="font-weight-bold errorText"> {{ history.errorMessage }}</span>
+                        Returned error: <span class="font-weight-bold errorText"> {{ history.errorMessage }}</span>
                     </span>
                     <span v-else-if="history.type === 'MESSAGE'">
                         {{ history.message }}

@@ -1,20 +1,20 @@
 import constVars from '../mixins/const-variables';
 
 export default {
-  emitActionRequestHistory(context, actionRequest) {
+  emitActionRequestHistory(context, readableName, parameters) {
     const dataHistory = {
-      name: actionRequest.actionType, type: 'INPUT'
+      readableName: readableName, type: 'INPUT'
     };
-    if (actionRequest.parameters && actionRequest.parameters.length > 0) {
+    if (parameters && parameters.length > 0) {
       dataHistory.parameters = [];
-      actionRequest.parameters.forEach(parameter => dataHistory.parameters.push(parameter))
+      parameters.forEach(parameter => dataHistory.parameters.push(parameter))
     }
     emitHistory(context, dataHistory);
   },
   emitResetHistory(context) {
     const dataHistory = {
       type: 'MESSAGE',
-      message: 'Zresetowano historię wywołanych akcji',
+      message: 'Changes history reset',
       time: getCurrentTime()
     };
     context.$eventBus.$emit(constVars.EVENT_HISTORY_RESET, dataHistory);

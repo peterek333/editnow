@@ -21,7 +21,7 @@
                     {{ actionTool.readableName }}
                     <tool-card-parameters-modal v-if="actionTool.parameterInfoDtos && actionTool.parameterInfoDtos.length > 0"
                                                 :modal-id="actionTool.name"
-                                                :modal-title="actionTool.name + ' parameters input modal' "
+                                                :modal-title="actionTool.readableName + ' parameters input modal' "
                                                 :parameter-info-dtos="actionTool.parameterInfoDtos"
                                                 :callbackFunctionOk="emitActionTool"/>
                 </button>
@@ -70,7 +70,10 @@
       },
       emitActionTool(actionToolName, parameterDtos) {
         let emittedActionTool = {
-          name: actionToolName
+          name: actionToolName,
+          readableName: this.actionTools.find(actionTool => {
+            return actionTool.name === actionToolName
+          }).readableName
         };
         if (parameterDtos !== null && parameterDtos.length > 0) {
           emittedActionTool.parameters = [];
