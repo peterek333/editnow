@@ -33,6 +33,7 @@ public class ActionCodeImporter {
     Object[][] pythonLibrariesInActionType = {
       {ActionType.GRAYSCALE, Collections.singletonList(PythonLibrary.OPEN_CV)},
       {ActionType.ROTATE, Collections.singletonList(PythonLibrary.OPEN_CV)},
+      {ActionType.RESIZE, Collections.singletonList(PythonLibrary.OPEN_CV)},
       {ActionType.MEDIAN_BLUR, Collections.singletonList(PythonLibrary.OPEN_CV)},
       {ActionType.GAUSSIAN_BLUR, Collections.singletonList(PythonLibrary.OPEN_CV)},
       {ActionType.BILATERAL_FILTER, Collections.singletonList(PythonLibrary.OPEN_CV)},

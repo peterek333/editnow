@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <span>
         <input type="button"
-               class="btn btn-primary font-weight-bold"
+               class="btn btn-success font-weight-bold"
                value="Generate code"
                :disabled="disableGenerateCodeBtn"
                @click="generateCode()" />
         <b-modal :id="modalId"
-                 title="Wygenerowany kod"
+                 title="Generated code"
                  hide-footer>
             <div>
                 <pre>
@@ -16,7 +16,7 @@
                 </pre>
             </div>
         </b-modal>
-    </div>
+    </span>
 </template>
 
 <script>

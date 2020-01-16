@@ -22,7 +22,7 @@
                 Cancel
             </button>
             <button type="button"
-                    class="btn btn-primary footer-button"
+                    class="btn btn-success footer-button"
                     @click="handleSendParameters"
             >
                 Send parameters

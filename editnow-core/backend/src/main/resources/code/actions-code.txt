@@ -7,6 +7,9 @@ center = (cols / 2, rows / 2)
 M = cv2.getRotationMatrix2D(center, {angle}, 1)
 rotated = cv2.warpAffine(image, M, (cols, rows))
 
+# RESIZE
+image = cv2.resize(image, ({width}, {height}), interpolation={interpolationType})
+
 # MEDIAN_BLUR
 image = cv2.medianBlur(image, {kSize})
 

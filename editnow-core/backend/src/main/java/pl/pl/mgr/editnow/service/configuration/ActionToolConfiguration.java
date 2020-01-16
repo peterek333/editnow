@@ -27,7 +27,7 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
     Map<ActionToolCategory, List<ActionType>> actionTypesInCategory = new HashMap<>();
 
     actionTypesInCategory.put(ActionToolCategory.PREPROCESSING,
-      Arrays.asList(ActionType.GRAYSCALE, ActionType.RGB_CHANNEL, ActionType.ROTATE, ActionType.MEDIAN_BLUR,
+      Arrays.asList(ActionType.GRAYSCALE, ActionType.ROTATE, ActionType.RESIZE, ActionType.MEDIAN_BLUR,
         ActionType.GAUSSIAN_BLUR, ActionType.BILATERAL_FILTER));
 
     actionTypesInCategory.put(ActionToolCategory.SEGMENTATION,
@@ -44,6 +44,11 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
 
     parameterInfosForActionType.put(ActionType.ROTATE,
       Collections.singletonList(new ParameterInfo("angle", ParameterType.INT)));
+
+    parameterInfosForActionType.put(ActionType.RESIZE, Arrays.asList(
+      new ParameterInfo("width", ParameterType.INT),
+      new ParameterInfo("height", ParameterType.INT),
+      new ParameterInfo("interpolationType", ParameterType.OPTION, createResizeOptions())));
 
     parameterInfosForActionType.put(ActionType.MEDIAN_BLUR,
       Collections.singletonList(new ParameterInfo("kSize", ParameterType.INT)));
@@ -69,6 +74,16 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
       new ParameterInfo("morphType", ParameterType.OPTION, createMorphologyTransformOptions())));
 
     return parameterInfosForActionType;
+  }
+
+  private List<ParameterInfoOption> createResizeOptions() {
+    return Arrays.asList(
+      new ParameterInfoOption("INTER_NEAREST", "0"),
+      new ParameterInfoOption("INTER_LINEAR", "1"),
+      new ParameterInfoOption("INTER_CUBIC", "2"),
+      new ParameterInfoOption("INTER_AREA", "3"),
+      new ParameterInfoOption("INTER_LANCZOS4", "4")
+    );
   }
 
   private List<ParameterInfoOption> createThresholdOptions() {

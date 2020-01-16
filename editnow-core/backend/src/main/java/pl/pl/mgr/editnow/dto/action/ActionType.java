@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ActionType {
     GRAYSCALE ("Grayscale"),
-    RGB_CHANNEL ("RGB channel"),
+    RESIZE("Resize"),
     ROTATE ("Rotate"),
     MEDIAN_BLUR ("Median blur"),
     GAUSSIAN_BLUR ("Gaussian blur"),

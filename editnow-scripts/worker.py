@@ -22,6 +22,7 @@ def getFilePathByActionName(name):
     acs = {
         'GRAYSCALE': 'preprocessing/grayscale_opencv.py',
         'ROTATE': 'preprocessing/rotate_opencv.py',
+        'RESIZE': 'preprocessing/resize_opencv.py',
         'MEDIAN_BLUR': 'preprocessing/median_blur_opencv.py',
         'GAUSSIAN_BLUR': 'preprocessing/gaussian_blur_opencv.py',
         'BILATERAL_FILTER': 'preprocessing/bilateral_filter_opencv.py',
