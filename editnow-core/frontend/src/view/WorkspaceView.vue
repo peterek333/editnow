@@ -187,17 +187,13 @@ export default {
       this.$eventBus.$emit(constVars.EVENT_IS_IMAGE, isImage);
     },
     createNewActionChain() {
-      this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'loadedFromCookie' || mutation.type === 'setGeneratedUUID') {
-          actionApi.newActionChain().then(response => {
-            this.actionChainIsEmpty = true;
-          });
-        }
+      actionApi.newActionChain().then(response => {
+        this.actionChainIsEmpty = true;
       });
     }
   },
   created() {
-    this.createNewActionChain();
+    setTimeout(() => this.createNewActionChain(), 1000);
     this.$eventBus.$on(constVars.EVENT_ACTION_TOOL_CLICK, (emittedActionTool) => {
       this.handleClickedActionTool(emittedActionTool);
     });

@@ -13,6 +13,10 @@ public enum ActionType {
     GAUSSIAN_BLUR ("Gaussian blur"),
     BILATERAL_FILTER ("Bilateral filter"),
     THRESHOLD ("Thresholding"),
+    PREWITT ("Prewitt operator"),
+    ROBERTS ("Roberts cross"),
+    SCHARR ("Scharr operator"),
+    SOBEL ("Sobel operator"),
     MORPHOLOGY_TRANSFORM ("Morphological transform")
     ;
 

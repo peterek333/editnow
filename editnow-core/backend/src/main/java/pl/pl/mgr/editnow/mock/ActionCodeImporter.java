@@ -38,6 +38,10 @@ public class ActionCodeImporter {
       {ActionType.GAUSSIAN_BLUR, Collections.singletonList(PythonLibrary.OPEN_CV)},
       {ActionType.BILATERAL_FILTER, Collections.singletonList(PythonLibrary.OPEN_CV)},
       {ActionType.THRESHOLD, Collections.singletonList(PythonLibrary.OPEN_CV)},
+      {ActionType.PREWITT, Arrays.asList(PythonLibrary.SCIKIT_PREWITT, PythonLibrary.SCIKIT_IO)},
+      {ActionType.ROBERTS, Arrays.asList(PythonLibrary.SCIKIT_ROBERTS, PythonLibrary.SCIKIT_IO)},
+      {ActionType.SCHARR, Arrays.asList(PythonLibrary.SCIKIT_SCHARR, PythonLibrary.SCIKIT_IO)},
+      {ActionType.SOBEL, Arrays.asList(PythonLibrary.SCIKIT_SOBEL, PythonLibrary.SCIKIT_IO)},
       {ActionType.MORPHOLOGY_TRANSFORM, Arrays.asList(PythonLibrary.OPEN_CV, PythonLibrary.NUMPY)},
     };
 

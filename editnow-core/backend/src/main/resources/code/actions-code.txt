@@ -22,6 +22,26 @@ image = cv2.bilateralFilter(image, {d}, {sigmaColor}, {sigmaSpace})
 # THRESHOLD
 retval, image = cv2.threshold(image, {threshold}, {maxval}, {thresholdType})
 
+# PREWITT
+if len(image.shape) == 3:
+    image = image[:, :, 0]  #RGB -> grayscale
+image = prewitt(image)
+
+# ROBERTS
+if len(image.shape) == 3:
+    image = image[:, :, 0]  #RGB -> grayscale
+image = roberts(image)
+
+# SCHARR
+if len(image.shape) == 3:
+    image = image[:, :, 0]  #RGB -> grayscale
+image = scharr(image)
+
+# SOBEL
+if len(image.shape) == 3:
+    image = image[:, :, 0]  #RGB -> grayscale
+image = sobel(image)
+
 # MORPHOLOGY_TRANSFORM
 kernel = np.ones(({kernelRows}, {kernelCols}), np.uint8)
 image = cv2.morphologyEx(image, {morphType}, kernel)

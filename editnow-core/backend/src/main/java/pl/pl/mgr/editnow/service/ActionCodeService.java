@@ -17,8 +17,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ActionCodeService {
 
-  private static final String LOAD_IMAGE_IN_OPEN_CV = "image = cv2.imread(\"path/to/your/image.jpg\")\n\n";
+  private static final String LOAD_IMAGE_IN_OPEN_CV = "image = cv2.imread(\"path/to/load/your_image.jpg\")\n\n";
   private static final String NEW_LINE = "\n";
+  private static final String SAVE_IMAGE_IN_OPEN_CV = "cv2.imwrite(\"path/to/save/output_image.jpg\", image)\n\n";
 
   private final UserService userService;
   private final ActionCodeRepository actionCodeRepository;
@@ -28,18 +29,20 @@ public class ActionCodeService {
 
     List<Action> actions = user.getActionChain().getActions();
 
+    return prepareGeneratedCode(actions);
+  }
+
+  private String prepareGeneratedCode(List<Action> actions) {
     StringBuilder generatedCode = new StringBuilder();
-    boolean insertedLoadImage = false;
+
+    appendLoadImage(generatedCode, actions.get(0));
+
     Set<PythonLibrary> importedLibraries = new HashSet<>();
 
-    for(Action action: actions) {
+    for (int i = 0; i < actions.size(); i++) {
+      Action action = actions.get(i);
       ActionType actionType = action.getActionType();
       ActionCode actionCode = actionCodeRepository.findActionCodeByActionType(actionType);
-
-      if ( !insertedLoadImage) {
-        insertLoadImage(generatedCode, actionCode.getPythonLibraries());
-        insertedLoadImage = true;
-      }
 
       importedLibraries.addAll(actionCode.getPythonLibraries());  //SET type of collections - add only unique libraries
 
@@ -52,17 +55,37 @@ public class ActionCodeService {
     }
 
     insertImports(generatedCode, importedLibraries);
-//    appendSaveImage(generatedCode, lastLibraryOpenCv);  //TODO
+    appendSaveImage(generatedCode, actions.get(actions.size() - 1));
 
     return generatedCode.toString();
   }
 
-  private void insertLoadImage(StringBuilder generatedCode, List<PythonLibrary> firstActionPythonLibraries) {
-    String loadImageCode = firstActionPythonLibraries.contains(PythonLibrary.OPEN_CV)
+  private void appendLoadImage(StringBuilder generatedCode, Action action) {
+    ActionCode actionCode = findActionCodeForAction(action);
+
+    String loadImageCode = containsOpenCvLibrary(actionCode.getPythonLibraries())
       ? LOAD_IMAGE_IN_OPEN_CV
       : "LOAD_IMAGE_BY_SCIKIT";
 
     generatedCode.append(loadImageCode);
+  }
+
+  private void appendSaveImage(StringBuilder generatedCode, Action action) {
+    ActionCode actionCode = findActionCodeForAction(action);
+
+    String saveImageCode = containsOpenCvLibrary(actionCode.getPythonLibraries())
+      ? SAVE_IMAGE_IN_OPEN_CV
+      : "SCIKIT";
+
+    generatedCode.append(saveImageCode);
+  }
+
+  private ActionCode findActionCodeForAction(Action action) {
+    return actionCodeRepository.findActionCodeByActionType(action.getActionType());
+  }
+
+  private boolean containsOpenCvLibrary(List<PythonLibrary> pythonLibraries) {
+    return pythonLibraries.contains(PythonLibrary.OPEN_CV);
   }
 
   private String prepareCode(ActionCode actionCode, List<Parameter> parameters) {

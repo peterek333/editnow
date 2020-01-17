@@ -27,6 +27,10 @@ def getFilePathByActionName(name):
         'GAUSSIAN_BLUR': 'preprocessing/gaussian_blur_opencv.py',
         'BILATERAL_FILTER': 'preprocessing/bilateral_filter_opencv.py',
         'THRESHOLD': 'segmentation/threshold_opencv.py',
+        'PREWITT': 'edges/prewitt_scikit.py',
+        'ROBERTS': 'edges/roberts_scikit.py',
+        'SCHARR': 'edges/scharr_scikit.py',
+        'SOBEL': 'edges/sobel_scikit.py',
         'MORPHOLOGY_TRANSFORM': 'morphology/morphology_transform_opencv.py'
     }
     return acs.get(name, None)

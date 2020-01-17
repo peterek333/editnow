@@ -33,6 +33,9 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
     actionTypesInCategory.put(ActionToolCategory.SEGMENTATION,
       Arrays.asList(ActionType.THRESHOLD));
 
+    actionTypesInCategory.put(ActionToolCategory.DETECT_EDGES,
+      Arrays.asList(ActionType.PREWITT, ActionType.ROBERTS, ActionType.SCHARR, ActionType.SOBEL));
+
     actionTypesInCategory.put(ActionToolCategory.MORPHOLOGY_OPERATIONS,
       Arrays.asList(ActionType.MORPHOLOGY_TRANSFORM));
 
