@@ -8,7 +8,7 @@
         <router-view></router-view>
       </b-row>
       <b-row class="justify-content-center align-items-end"  style="height: 15%;">
-        <span class="m-3 font-italic">{{ appBuildInfo }}</span>
+        <span class="m-3 font-italic" style="font-weight: bold;">{{ appBuildInfo }}</span>
       </b-row>
     </b-container>
     <div id="tools-menu">
