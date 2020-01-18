@@ -15,7 +15,8 @@ processedImageName = argv[3]
 image = cv2.imread(path + imageName)
 
 # ### work
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+if len(image.shape) == 3:
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 # ### end work
 
 # save image

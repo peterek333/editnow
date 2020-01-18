@@ -18,8 +18,14 @@ import java.util.stream.Collectors;
 public class ActionCodeService {
 
   private static final String LOAD_IMAGE_IN_OPEN_CV = "image = cv2.imread(\"path/to/load/your_image.jpg\")\n\n";
+  private static final String LOAD_IMAGE_IN_SCIKIT = "image = io.imread(\"path/to/load/your_image.jpg\")\n\n";
   private static final String NEW_LINE = "\n";
   private static final String SAVE_IMAGE_IN_OPEN_CV = "cv2.imwrite(\"path/to/save/output_image.jpg\", image)\n\n";
+  private static final String SAVE_IMAGE_IN_SCIKIT = "io.imsave(\"path/to/save/output_image.jpg\", image)\n\n";
+  private static final List<PythonLibrary> BGR_LIBRARIES = Collections.singletonList(PythonLibrary.OPEN_CV);
+  private static final List<PythonLibrary> RGB_LIBRARIES = Arrays.asList(PythonLibrary.SCIKIT_SOBEL, PythonLibrary.SCIKIT_ROBERTS,
+    PythonLibrary.SCIKIT_PREWITT, PythonLibrary.SCIKIT_SCHARR, PythonLibrary.SCIKIT_IO);
+  private static final String CONVERSION_BGR_RGB_OR_RGB_BGR = "if len(image.shape) == 3:\n    image = image[...,::-1]\n";
 
   private final UserService userService;
   private final ActionCodeRepository actionCodeRepository;
@@ -48,16 +54,54 @@ public class ActionCodeService {
 
       String code = prepareCode(actionCode, action.getParameters());
 
-      //TODO convert image BGR -> RGB / RGB -> BGR for cv <-> scikit
-
       generatedCode.append("# Action name: ").append(actionType.name()).append(NEW_LINE);
       generatedCode.append(code).append(NEW_LINE);
+      if (i < (actions.size() - 1)) {
+        appendImageConversion(generatedCode, actions.get(i), actions.get(i + 1));
+      }
     }
 
     insertImports(generatedCode, importedLibraries);
-    appendSaveImage(generatedCode, actions.get(actions.size() - 1));
+//    appendSaveImage(generatedCode, actions.get(actions.size() - 1));
+    appendSaveImage(generatedCode, importedLibraries);
 
     return generatedCode.toString();
+  }
+
+  private void appendImageConversion(StringBuilder generatedCode, Action actualAction, Action nextAction) {
+    boolean isActualBGRLibrary = isBGRLibrary(actualAction);
+    boolean isNextRGBLibrary = isRGBLibrary(nextAction);
+
+    boolean needBGRToRGBConversion = isActualBGRLibrary && isNextRGBLibrary;
+    boolean needRGBToBGRConversion = !isActualBGRLibrary && !isNextRGBLibrary;
+
+    if (needBGRToRGBConversion) {
+      generatedCode.append("# Image conversion BGR to RGB").append(NEW_LINE);
+    }
+
+    if (needRGBToBGRConversion) {
+      generatedCode.append("# Image conversion RGB to BGR").append(NEW_LINE);
+    }
+
+    if (needBGRToRGBConversion || needRGBToBGRConversion) {
+      generatedCode.append(CONVERSION_BGR_RGB_OR_RGB_BGR).append(NEW_LINE);
+    }
+  }
+
+  private boolean isBGRLibrary(Action action) {
+    return findActionCodeForAction(action).getPythonLibraries()
+      .stream()
+      .map(BGR_LIBRARIES::contains)
+      .findFirst()
+      .orElse(false);
+  }
+
+  private boolean isRGBLibrary(Action action) {
+    return findActionCodeForAction(action).getPythonLibraries()
+      .stream()
+      .map(RGB_LIBRARIES::contains)
+      .findFirst()
+      .orElse(false);
   }
 
   private void appendLoadImage(StringBuilder generatedCode, Action action) {
@@ -65,7 +109,7 @@ public class ActionCodeService {
 
     String loadImageCode = containsOpenCvLibrary(actionCode.getPythonLibraries())
       ? LOAD_IMAGE_IN_OPEN_CV
-      : "LOAD_IMAGE_BY_SCIKIT";
+      : LOAD_IMAGE_IN_SCIKIT;
 
     generatedCode.append(loadImageCode);
   }
@@ -75,7 +119,16 @@ public class ActionCodeService {
 
     String saveImageCode = containsOpenCvLibrary(actionCode.getPythonLibraries())
       ? SAVE_IMAGE_IN_OPEN_CV
-      : "SCIKIT";
+      : SAVE_IMAGE_IN_SCIKIT;
+
+    generatedCode.append(saveImageCode);
+  }
+
+
+  private void appendSaveImage(StringBuilder generatedCode, Set<PythonLibrary> importedLibraries) {
+    String saveImageCode = importedLibraries.contains(PythonLibrary.SCIKIT_IO)
+      ? SAVE_IMAGE_IN_SCIKIT
+      : SAVE_IMAGE_IN_OPEN_CV;
 
     generatedCode.append(saveImageCode);
   }

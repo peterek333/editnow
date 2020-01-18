@@ -4,7 +4,7 @@ applications:
     memory: 872M
     routes:
     - route: editnow.cfapps.io
-    path: ./backend/target/backend-0.0.1-SNAPSHOT.jar
+    path: ./backend/target/editnow-core.jar
     env:
       SPRING_PROFILES_ACTIVE: cloud
     services:

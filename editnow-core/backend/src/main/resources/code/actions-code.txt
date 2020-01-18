@@ -1,11 +1,12 @@
 # GRAYSCALE
-image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+if len(image.shape) == 3:
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 # ROTATE
 rows, cols = image.shape[:2]
 center = (cols / 2, rows / 2)
 M = cv2.getRotationMatrix2D(center, {angle}, 1)
-rotated = cv2.warpAffine(image, M, (cols, rows))
+image = cv2.warpAffine(image, M, (cols, rows))
 
 # RESIZE
 image = cv2.resize(image, ({width}, {height}), interpolation={interpolationType})

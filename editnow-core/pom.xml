@@ -57,6 +57,7 @@
 				<version>${build-plugin.coveralls.version}</version>
 			</plugin>
 		</plugins>
+		<finalName>editnow-core</finalName>
 	</build>
 
 </project>
