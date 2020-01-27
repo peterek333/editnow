@@ -9,7 +9,6 @@
             v-bind:accordion="toolCard.accordion"
             v-bind:accordion-name="toolCard.accordionName"
             v-bind:action-tools="toolCard.actionTools"
-            v-on:action-tool-click-event="handleClick"
             v-bind:visible="toolCard.visible"></tool-card>
     </div>
 </template>
@@ -34,8 +33,8 @@
 
           configurationApi.getActionTools()
             .then(response => {
+              const FIRST_ACTION_TOOL_CATEGORY = 0;
               const actionToolsInCategory = response.data;
-              console.log(actionToolsInCategory);
 
               actionToolsInCategory.forEach( (actionToolInCategory, index) => {
                 const categoryName = actionToolInCategory.categoryName;
@@ -43,7 +42,7 @@
                   accordion: context.toolCardsTitle,
                   accordionName: categoryName,
                   actionTools: actionToolInCategory.actionTools,
-                  visible: index === 0 //first will be open
+                  visible: index === FIRST_ACTION_TOOL_CATEGORY
                 });
               })
 
@@ -51,9 +50,6 @@
             .catch(error => {
               console.log(error)
             })
-        },
-        handleClick($event) {
-          console.log($event.name)
         }
       },
       created() {

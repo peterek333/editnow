@@ -9,7 +9,7 @@
 	<packaging>pom</packaging>
 
 	<name>editnow</name>
-	<description>Image processing interface using Python graphics libraries</description>
+	<description>Editing service applying selected graphic libraries and generating corresponding Python code</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -30,33 +30,33 @@
     </modules>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${build-plugin.jacoco.version}</version>
-				<executions>
-					<execution>
-						<id>pre-unit-test</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>post-unit-test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.eluder.coveralls</groupId>
-				<artifactId>coveralls-maven-plugin</artifactId>
-				<version>${build-plugin.coveralls.version}</version>
-			</plugin>
-		</plugins>
+<!--		<plugins>-->
+<!--			<plugin>-->
+<!--				<groupId>org.jacoco</groupId>-->
+<!--				<artifactId>jacoco-maven-plugin</artifactId>-->
+<!--				<version>${build-plugin.jacoco.version}</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>pre-unit-test</id>-->
+<!--						<goals>-->
+<!--							<goal>prepare-agent</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--					<execution>-->
+<!--						<id>post-unit-test</id>-->
+<!--						<phase>test</phase>-->
+<!--						<goals>-->
+<!--							<goal>report</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
+<!--			<plugin>-->
+<!--				<groupId>org.eluder.coveralls</groupId>-->
+<!--				<artifactId>coveralls-maven-plugin</artifactId>-->
+<!--				<version>${build-plugin.coveralls.version}</version>-->
+<!--			</plugin>-->
+<!--		</plugins>-->
 		<finalName>editnow-core</finalName>
 	</build>
 

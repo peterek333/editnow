@@ -1,5 +1,6 @@
 .idea/
 backend/target/
+**/resources/public/
 
 frontend/target/
 frontend/node

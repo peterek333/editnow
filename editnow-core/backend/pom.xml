@@ -47,14 +47,6 @@
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
 
-		<!-- In-Memory database used for local development & testing -->
-<!--		<dependency>-->
-<!--			<groupId>com.h2database</groupId>-->
-<!--			<artifactId>h2</artifactId>-->
-<!--		</dependency>-->
-
-		<!-- Switch back from Spring Boot 2.x standard HikariCP to Tomcat JDBC,
-		configured later in Heroku (see https://stackoverflow.com/a/49970142/4964553) -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
@@ -74,18 +66,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cloud-connectors</artifactId>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.cloudfoundry</groupId>-->
-<!--			<artifactId>auto-reconfiguration</artifactId>-->
-<!--			<version>1.12.0.RELEASE</version>-->
-<!--		</dependency>-->
-
-		<!-- Testing -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>io.rest-assured</groupId>
@@ -98,12 +78,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -135,13 +109,6 @@
 			<artifactId>org-openide-util</artifactId>
 			<version>RELEASE111</version>
 		</dependency>
-
-<!--		<dependency>-->
-<!--			<groupId>org.liquibase</groupId>-->
-<!--			<artifactId>liquibase-core</artifactId>-->
-<!--			<version>3.8.1</version>-->
-<!--		</dependency>-->
-
 	</dependencies>
 
 	<build>
@@ -154,7 +121,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>copy Vue.js frontend content</id>
+                        <id>Frontend module copy</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>

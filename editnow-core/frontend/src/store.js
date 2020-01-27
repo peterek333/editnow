@@ -26,10 +26,8 @@ export default new Vuex.Store({
                 const userUUID = Cookies.get(USER_UUID);
                 if (userUUID) {
                     context.commit('loadedFromCookie', userUUID);
-                    console.log('resolve');
                     resolve()
                 } else {
-                    console.log('reject');
                     reject()
                 }
             })

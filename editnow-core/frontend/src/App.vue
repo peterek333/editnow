@@ -49,10 +49,8 @@ export default {
             });
   },
   beforeCreate() {
-    console.log("Hello!");
     this.$store.dispatch('loadUUIDFromCookie')
             .catch((state) => {
-              console.log(state);
               this.$store.dispatch('generateUUID');
             })
   }

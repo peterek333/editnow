@@ -127,7 +127,6 @@ export default {
       completedAction.onerror = function(event) {
         if (event.eventPhase === EventSource.CLOSED) {
           completedAction.close();
-          console.log('SSE closed');
         }
       }
     },
@@ -140,10 +139,8 @@ export default {
       const objectContext = this;
 
       const file = target.files[0];
-      target.value = '';        //FIXME pozwala ponownie wylapac onchange na elemencie
+      target.value = '';
       const reader = new FileReader();
-
-      console.log(target.files, target);
 
       reader.onloadend = function() {
         objectContext.inputImage = imageUtil.getImageStructureFromFullImageBase64(reader.result);
@@ -167,7 +164,6 @@ export default {
       historyService.emitActionRequestHistory(this, emittedActionTool.readableName, actionRequest.parameters);
       actionApi.sendActionRequest(actionRequest)
         .then(response => {
-          console.log('actionRequest', actionRequest, response.data);
           this.waitForCompletedAction(response.data.id);
         })
         .catch(error => {
@@ -202,8 +198,6 @@ export default {
 }
 
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     .center-spinner {
         position: absolute;

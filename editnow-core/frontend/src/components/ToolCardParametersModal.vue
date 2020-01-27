@@ -12,8 +12,6 @@
                                v-model="parameterInfo.value"
                                :options="parameterInfo.parameterInfoOptionDtos"></b-form-select>
             </b-input-group>
-
-<!--            TODO obsluga innych typow + przesylanie tej wartosci po nacisnieciu start -->
         </div>
         <div class="footer">
             <button type="button"
@@ -37,16 +35,13 @@
     props: [
       'modalId', 'modalTitle', 'parameterInfoDtos', 'callbackFunctionOk'
     ],
-    created() {
-      console.log('created', this.modalId);
-    },
     methods: {
       handleSendParameters() {
         this.callbackFunctionOk(this.modalId, this.parameterInfoDtos);
         this.closeModal();
       },
       closeModal() {
-        this.$bvModal.hide(this.modalId);  //FIXME zapamietuje wpisane parametry ze wzgledu na fakt, ze modal jest chowany wiec jego obiekt jest nadal w pamieci
+        this.$bvModal.hide(this.modalId);
       }
     }
   }

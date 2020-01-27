@@ -59,13 +59,7 @@
     },
     data() {
       return {
-        histories: [
-          // { time: '18:20:32', name: 'GRAYSCALE', type: 'INPUT' },
-          // { time: '18:20:36', name: 'GRAYSCALE', type: 'OUTPUT' },
-          // { time: '18:20:50', name: 'MEDIAN_BLUR', type: 'INPUT',
-          //   parameters: [{ name: 'kSize', value: '2' }] },
-          // { time: '18:20:53', name: 'MEDIAN_BLUR', type: 'ERROR', errorMessage: 'Niepoprawna wartosc parametrow'}
-        ]
+        histories: []
       }
     }
   }
