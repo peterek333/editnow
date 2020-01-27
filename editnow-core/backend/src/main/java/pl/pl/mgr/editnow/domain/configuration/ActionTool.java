@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.pl.mgr.editnow.dto.action.ActionType;
 import pl.pl.mgr.editnow.dto.configuration.ActionToolCategory;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class ActionTool {
   @Enumerated(EnumType.STRING)
   private ActionToolCategory actionToolCategory;
 
-  @OneToMany(cascade = CascadeType.ALL)   //TODO zweryfikowac, poprawic
+  @OneToMany(cascade = CascadeType.ALL)
   @JoinColumn(name = "actionTool_id")
   private List<ParameterInfo> parameterInfos;
 

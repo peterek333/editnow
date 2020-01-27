@@ -3,7 +3,6 @@ package pl.pl.mgr.editnow.domain;
 import lombok.Getter;
 import lombok.Setter;
 import pl.pl.mgr.editnow.dto.ImageType;
-
 import javax.persistence.*;
 
 @Entity

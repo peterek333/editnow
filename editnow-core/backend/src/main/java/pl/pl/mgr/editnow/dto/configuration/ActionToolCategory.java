@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ActionToolCategory {
-  PREPROCESSING("Pre-processing"),      //Przetwarzanie wstępne
-  SEGMENTATION("Segmentation"),   //Segmentacja obrazu
-  DETECT_EDGES("Edge detection"),  //Detekcja krawędzi
-  MORPHOLOGY_OPERATIONS("Morphological operations")  //Operacje morfologiczne
+  PREPROCESSING("Pre-processing"),
+  SEGMENTATION("Segmentation"),
+  DETECT_EDGES("Edge detection"),
+  MORPHOLOGY_OPERATIONS("Morphological operations")
   ;
 
   private final String name;

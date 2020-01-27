@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import pl.pl.mgr.editnow.mock.ActionCodeImporter;
+import pl.pl.mgr.editnow.service.configuration.ActionCodeImporter;
 import pl.pl.mgr.editnow.service.configuration.ActionToolConfiguration;
 
 @Component

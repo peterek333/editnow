@@ -2,7 +2,6 @@ package pl.pl.mgr.editnow.dto;
 
 import lombok.RequiredArgsConstructor;
 
-
 @RequiredArgsConstructor
 public enum PythonLibrary {
 
@@ -12,7 +11,7 @@ public enum PythonLibrary {
   SCIKIT_ROBERTS("roberts", null, "skimage.filters"),
   SCIKIT_SCHARR("scharr", null, "skimage.filters"),
   SCIKIT_SOBEL("sobel", null, "skimage.filters"),
-  SCIKIT_IO("io", null, "skimages")
+  SCIKIT_IO("io", null, "skimage")
   ;
 
   private static final String KEYWORD_IMPORT = "import ";

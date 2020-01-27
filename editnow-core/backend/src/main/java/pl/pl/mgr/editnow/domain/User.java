@@ -17,7 +17,7 @@ public class User {
     @Column(unique = true)
     private String uuid;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) //, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "actionChain_id")
     private ActionChain actionChain;
 

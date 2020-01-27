@@ -2,8 +2,8 @@ package pl.pl.mgr.editnow.service.util;
 
 public interface ImageConverter<T> {
 
-    public byte[] encode(T data);
-    public byte[] encode(byte[] dataBytes);
-    public T decode(byte[] encodedData);
+    byte[] encode(T data);
+    byte[] encode(byte[] dataBytes);
+    T decode(byte[] encodedData);
 
 }

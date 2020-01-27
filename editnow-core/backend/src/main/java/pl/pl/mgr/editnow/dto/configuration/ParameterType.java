@@ -7,5 +7,4 @@ public enum ParameterType {
   STRING,
   OPTION
 
-
 }

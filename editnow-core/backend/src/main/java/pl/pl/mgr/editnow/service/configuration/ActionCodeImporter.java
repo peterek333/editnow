@@ -1,6 +1,7 @@
-package pl.pl.mgr.editnow.mock;
+package pl.pl.mgr.editnow.service.configuration;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -12,16 +13,14 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ActionCodeImporter {
 
-  private static final Logger LOGGER = Logger.getLogger(ActionCodeImporter.class.getName());
   private static final String FUNCTIONS_CODE_FILE_PATH = "code/actions-code.txt";
   private static final String ACTION_CODE_START_SIGN = "#";
 
@@ -70,7 +69,7 @@ public class ActionCodeImporter {
 
         fillActionCodes(reader.lines());
 
-        LOGGER.log(Level.INFO, "Action codes import completed");
+        log.info("Action codes import completed");
       }
     } catch (IOException e) {
       e.printStackTrace();

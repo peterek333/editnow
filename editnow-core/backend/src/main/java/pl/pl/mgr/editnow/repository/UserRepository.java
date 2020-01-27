@@ -1,6 +1,5 @@
 package pl.pl.mgr.editnow.repository;
 
-
 import pl.pl.mgr.editnow.domain.User;
 import org.springframework.data.repository.CrudRepository;
 

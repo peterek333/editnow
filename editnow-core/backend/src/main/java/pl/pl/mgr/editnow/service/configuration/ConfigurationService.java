@@ -7,7 +7,6 @@ import pl.pl.mgr.editnow.dto.ActionToolsInCategoryDto;
 import pl.pl.mgr.editnow.dto.configuration.ActionToolCategory;
 import pl.pl.mgr.editnow.mapper.ActionToolDtoMapper;
 import pl.pl.mgr.editnow.repository.ActionToolRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 

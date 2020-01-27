@@ -1,5 +1,7 @@
 package pl.pl.mgr.editnow.service;
 
+import static pl.pl.mgr.editnow.service.util.ActionCodeConstants.*;
+
 import lombok.RequiredArgsConstructor;
 import org.openide.util.MapFormat;
 import org.springframework.stereotype.Service;
@@ -17,15 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ActionCodeService {
 
-  private static final String LOAD_IMAGE_IN_OPEN_CV = "image = cv2.imread(\"path/to/load/your_image.jpg\")\n\n";
-  private static final String LOAD_IMAGE_IN_SCIKIT = "image = io.imread(\"path/to/load/your_image.jpg\")\n\n";
   private static final String NEW_LINE = "\n";
-  private static final String SAVE_IMAGE_IN_OPEN_CV = "cv2.imwrite(\"path/to/save/output_image.jpg\", image)\n\n";
-  private static final String SAVE_IMAGE_IN_SCIKIT = "io.imsave(\"path/to/save/output_image.jpg\", image)\n\n";
-  private static final List<PythonLibrary> BGR_LIBRARIES = Collections.singletonList(PythonLibrary.OPEN_CV);
-  private static final List<PythonLibrary> RGB_LIBRARIES = Arrays.asList(PythonLibrary.SCIKIT_SOBEL, PythonLibrary.SCIKIT_ROBERTS,
-    PythonLibrary.SCIKIT_PREWITT, PythonLibrary.SCIKIT_SCHARR, PythonLibrary.SCIKIT_IO);
-  private static final String CONVERSION_BGR_RGB_OR_RGB_BGR = "if len(image.shape) == 3:\n    image = image[...,::-1]\n";
 
   private final UserService userService;
   private final ActionCodeRepository actionCodeRepository;
@@ -62,8 +56,7 @@ public class ActionCodeService {
     }
 
     insertImports(generatedCode, importedLibraries);
-//    appendSaveImage(generatedCode, actions.get(actions.size() - 1));
-    appendSaveImage(generatedCode, importedLibraries);
+    appendSaveImage(generatedCode, importedLibraries);  //appendSaveImage(generatedCode, actions.get(actions.size() - 1));
 
     return generatedCode.toString();
   }

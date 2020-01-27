@@ -18,7 +18,6 @@ import pl.pl.mgr.editnow.mapper.ParameterDtoMapper;
 import pl.pl.mgr.editnow.mapper.ParameterMapperImpl;
 import pl.pl.mgr.editnow.repository.ActionRepository;
 import pl.pl.mgr.editnow.service.queue.ActionSender;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -55,7 +54,7 @@ public class ActionService {
     ActionQueueItem actionQueueItem = createActionQueueItem(action, actionRequest.getImageBase64());
     actionSender.send(actionQueueItem);
 
-    return actionDtoMapper.map(action);  //TODO handle action on frontend OR change to outputfilename
+    return actionDtoMapper.map(action);
   }
 
   private void addActionToActionChain(User user, Action action) {
@@ -134,10 +133,6 @@ public class ActionService {
   public Action getAction(long id) {
     return actionRepository.findById(id);
 //      .orElseThrow(() -> new Exception("Action id = " + id + " not found"));
-  }
-
-  public List<ActionType> getActionTypes() {
-    return Arrays.asList(ActionType.values());
   }
 
   public ImageDetails getOutputImageByActionId(long actionId) throws IOException {

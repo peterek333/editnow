@@ -13,7 +13,6 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-//@Transactional  //TODO performance?
 public class SseEmitterService {
 
   private final Map<String, SseEmitter> emitters = new HashMap<>();
@@ -39,12 +38,11 @@ public class SseEmitterService {
     Action action = actionService.getAction(completedAction.getActionId());
 
     String userUUID = action.getUser().getUuid();
-//    List<Action> actionChain = action.getUser().getActionChain();
 
     SseEmitter emitter = emitters.get(userUUID);
     if (emitter != null) {
       try {
-        emitter.send(new Gson().toJson("Works"));
+        emitter.send(new Gson().toJson("Completed action"));
       } catch (IOException e) {
         emitters.remove(userUUID); //dead emitter
         e.printStackTrace();

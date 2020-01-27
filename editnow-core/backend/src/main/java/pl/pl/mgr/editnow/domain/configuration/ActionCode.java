@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import pl.pl.mgr.editnow.dto.PythonLibrary;
 import pl.pl.mgr.editnow.dto.action.ActionType;
-
 import javax.persistence.*;
 import java.util.List;
 
