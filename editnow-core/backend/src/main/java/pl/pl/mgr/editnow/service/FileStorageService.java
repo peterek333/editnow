@@ -1,11 +1,14 @@
 package pl.pl.mgr.editnow.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pl.mgr.editnow.dto.ImageType;
 import pl.pl.mgr.editnow.service.util.ImageNameFactoryImpl;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -13,20 +16,28 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
-import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FileStorageService {
 
-  private static final String IMAGES_DIRECTORY = "./images/";
+  @Value("${directory.images}")
+  private String IMAGES_DIRECTORY = "./images/";
 
   private final ImageNameFactoryImpl imageNameFactory;
+
+  @EventListener(ApplicationReadyEvent.class)
+  public void createDirectories() {
+    boolean createdDirectories = new File(IMAGES_DIRECTORY).mkdirs();
+    if (createdDirectories) {
+      log.info("Path '" + IMAGES_DIRECTORY + "' created");
+    }
+  }
 
   @Transactional
   public String saveRenamedToUUID(String imageBase64, ImageType imageType) {
     String fileName = imageNameFactory.generateName(imageType);
-    //TODO util for manage file path local/cloud + handle imageBase64 type
     return saveImageFromBase64(imageBase64, fileName);
   }
 
@@ -48,13 +59,6 @@ public class FileStorageService {
     byte[] imageBytes = Files.readAllBytes(Paths.get(IMAGES_DIRECTORY, imageName));
 
     return Base64.getEncoder().encodeToString(imageBytes);
-  }
-
-  public void createDirectories() {
-    boolean createdDirectories = new File(IMAGES_DIRECTORY).mkdirs();
-    if (createdDirectories) {
-      System.out.println("Path '" + IMAGES_DIRECTORY + "' created");
-    }
   }
 
 }
