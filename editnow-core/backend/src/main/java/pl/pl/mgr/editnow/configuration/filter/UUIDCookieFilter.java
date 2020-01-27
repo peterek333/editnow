@@ -1,28 +1,23 @@
 package pl.pl.mgr.editnow.configuration.filter;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import pl.pl.mgr.editnow.domain.User;
-import pl.pl.mgr.editnow.repository.UserRepository;
-
+import pl.pl.mgr.editnow.service.UserService;
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UUIDCookieFilter implements Filter {
 
-  private static final Logger LOGGER = Logger.getLogger(UUIDCookieFilter.class.getName());
-
   private static final String USER_UUID_COOKIE = "userUUID";
-  private final UserRepository userRepository;
+  private final UserService userService;
 
   @Override
   public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
@@ -30,7 +25,7 @@ public class UUIDCookieFilter implements Filter {
 
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
-      LOGGER.log(Level.INFO, "Request path: " + request.getRequestURI());
+      log.info("Request path: " + request.getRequestURI());
       setUUIDFromCookiesInContext(cookies);
     }
 
@@ -44,29 +39,13 @@ public class UUIDCookieFilter implements Filter {
       .ifPresent(uuidCookie -> {
         String uuid = uuidCookie.getValue();
 
-        LOGGER.log(Level.INFO, "Request from user: " + uuid);
+        log.info("Request from user: " + uuid);
 
-        addToDatabaseIfNotExist(uuid);
+        userService.addToDatabaseIfNotExist(uuid);
 
         UUIDAuthentication uuidAuthentication = new UUIDAuthentication(uuid);
         SecurityContextHolder.getContext().setAuthentication(uuidAuthentication);
       });
-  }
-
-  void addToDatabaseIfNotExist(String uuid) {
-    User userFromDb = userRepository.findByUuid(uuid);
-
-    if (userFromDb == null) {
-      User user = new User();
-      user.setUuid(uuid);
-
-      try {
-        userRepository.save(user);
-        LOGGER.log(Level.INFO, "Added to database user: " + uuid);
-      } catch (Exception exc) {
-        LOGGER.log(Level.INFO, "User: " + uuid + " exist in database");
-      }
-    }
   }
 
 }

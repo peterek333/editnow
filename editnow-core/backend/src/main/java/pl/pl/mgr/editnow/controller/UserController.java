@@ -15,7 +15,6 @@ public class UserController {
 
   @GetMapping("/uuid")
   public String generateUUID() {
-    //TODO refactor to service
     return userService.generateUUID();
   }
 

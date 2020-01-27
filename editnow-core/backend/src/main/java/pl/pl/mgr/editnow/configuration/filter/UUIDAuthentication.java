@@ -3,7 +3,6 @@ package pl.pl.mgr.editnow.configuration.filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -13,7 +12,6 @@ public class UUIDAuthentication implements Authentication {
   private final String userUUID;
 
   private Collection<GrantedAuthority> collection = new ArrayList<>();
-
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

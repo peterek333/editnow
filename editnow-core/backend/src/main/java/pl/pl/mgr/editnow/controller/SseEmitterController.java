@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import pl.pl.mgr.editnow.service.SseEmitterService;
-
 import javax.servlet.http.HttpServletResponse;
 
 @RestController

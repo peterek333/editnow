@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.pl.mgr.editnow.dto.ActionToolsInCategoryDto;
 import pl.pl.mgr.editnow.service.configuration.ConfigurationService;
-
 import java.util.List;
 
 @RestController

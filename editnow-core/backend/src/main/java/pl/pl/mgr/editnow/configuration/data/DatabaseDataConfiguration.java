@@ -16,9 +16,8 @@ public class DatabaseDataConfiguration {
 
   @EventListener(ApplicationReadyEvent.class)
   public void createDirectoriesAndMockData() {
-
     actionCodeImporter.importActionCodes();
-    actionToolConfiguration.insertData();
+    actionToolConfiguration.createActionToolConfiguration();
   }
 
 }

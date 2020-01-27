@@ -99,7 +99,7 @@ public class ActionCodeImporter {
 
           actualActionType.set(foundActionType);  //format "# GRAYSCALE" to "GRAYSCALE"
 
-          code.setLength(0);  //maybe slower than new StringBuilder but avoids AtomicReference for this field
+          code.setLength(0);  //reset for next action code block lines
         }
       } else if ( !codeLine.isEmpty()) {  //if is not empty line - add line to code
         code.append(codeLine).append("\n");

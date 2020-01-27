@@ -14,9 +14,8 @@ import java.util.*;
 
 @Component
 @RequiredArgsConstructor
-public class ActionToolConfiguration implements InitializationDatabaseData {
+public class ActionToolConfiguration {
 
-  //TODO usunac po testach
   private final ActionCodeRepository actionCodeRepository;
   private final ActionToolRepository actionToolRepository;
 
@@ -111,8 +110,7 @@ public class ActionToolConfiguration implements InitializationDatabaseData {
     );
   }
 
-  @Override
-  public void insertData() {
+  public void createActionToolConfiguration() {
     List<ActionTool> actionTools = new ArrayList<>();
 
     for(Map.Entry<ActionToolCategory, List<ActionType>> actionTypesInCategoryEntry: actionTypesInCategory.entrySet()) {
