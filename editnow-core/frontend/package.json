@@ -1,8 +1,7 @@
 {
   "name": "frontend",
   "version": "3.0.0",
-  "description": "A Vue.js & Spring Boot example project",
-  "author": "Jonas Hecht <jonas.hecht@codecentric.de>",
+  "description": "EditNow frontend module",
   "private": true,
   "scripts": {
     "clean": "rm -rf node_modules target",
@@ -10,7 +9,8 @@
     "test:unit": "vue-cli-service test:unit --coverage",
     "test:e2e": "vue-cli-service test:e2e",
     "test": "vue-cli-service test:unit && vue-cli-service test:e2e",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "prod": "vue-cli-service serve --mode production"
   },
   "dependencies": {
     "axios": "^0.18.1",

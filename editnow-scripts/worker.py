@@ -3,7 +3,6 @@ import json, os
 import subprocess
 import pika
 from pika.exceptions import AMQPConnectionError
-# import MySQLdb
 import base64
 import logging
 
@@ -13,11 +12,10 @@ SCRIPTS_FOLDER_PATH = './scripts/'
 IMAGES_FOLDER_PATH = './images/'
 
 args = []
-# amqp_uri = 'localhost'
 rabbitMQConnection = None
 dbConnection = None
 
-# TODO change related function/action - python scripts to database
+
 def getFilePathByActionName(name):
     acs = {
         'GRAYSCALE': 'preprocessing/grayscale_opencv.py',
@@ -35,6 +33,7 @@ def getFilePathByActionName(name):
     }
     return acs.get(name, None)
 
+
 def parseArguments():
     global args
     parser = ArgumentParser()
@@ -46,8 +45,7 @@ def parseArguments():
 def prepareEnvironment():
     # global amqp_uri
     initRabbitMQConnection()
-    # initDatabaseConnection()
-    createDirectories()
+    createDirectoriesIfNotExists()
 
 
 def initRabbitMQConnection():
@@ -63,7 +61,7 @@ def initRabbitMQConnection():
         print(' RabbitMQ connection problem')
 
 
-def createDirectories():
+def createDirectoriesIfNotExists():
     if not os.path.exists(os.path.dirname(IMAGES_FOLDER_PATH)):
         os.makedirs(os.path.dirname(IMAGES_FOLDER_PATH))
         print('Path: \'' + IMAGES_FOLDER_PATH + '\' created')
@@ -84,7 +82,7 @@ def handleActionWithException(ch, method, properties, body):
         handleAction(ch, method, properties, body)
     except Exception as e:
         logging.error('Error at %s', 'division', exc_info=e)
-        #TODO send failed message
+        #TODO send message about fail
 
 
 def handleAction(ch, method, properties, body):
@@ -126,12 +124,6 @@ def saveImageFromBase64(inputImageName, imageBase64):
 def logInfo(text):
     print(text)
 
-# def changeActionStatusToComplete(actionId):
-#     global dbConnection
-#     cursor = dbConnection.cursor()
-#     cursor.execute("UPDATE `actions` SET `status` = 'COMPLETED' WHERE id = %s", (actionId, ))
-#     dbConnection.commit()
-
 
 def sendCompletedAction(actionId, outputImageName):
     completedActionChannel = rabbitMQConnection.channel()
@@ -141,7 +133,6 @@ def sendCompletedAction(actionId, outputImageName):
         resultData['imageBase64'] = base64.b64encode(image.read()).decode('ascii')
     completedActionChannel.basic_publish(exchange='', routing_key=COMPLETED_ACTION_QUEUE_NAME, body=json.dumps(resultData))
     completedActionChannel.close()
-
 
 
 if __name__ == '__main__':
